@@ -6,6 +6,38 @@
     <title>Education Kit</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Стилі для спливаючого вікна */
+        .popup {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .popup-content {
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            width: 80%;
+            max-width: 700px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .popup-content h2 {
+            margin-top: 0;
+            font-size: 3rem;
+            color: rgb(226, 226, 226);
+        }
+        .popup-content p {
+            color: rgb(226, 226, 226);
+            font-size: 2rem;
+        }
+    </style>
 </head>
 <body>
     <canvas id="canvas"></canvas>
@@ -44,7 +76,15 @@
             <input type="password" id="repeatPassword" placeholder="Повторіть пароль" class="input-field">
 
             <!-- Кнопка для входу -->
-            <a href="index.html" class="btn-submit">Увійти</a>
+            <a href="#" id="submitBtn" class="btn-submit">Увійти</a>
+        </div>
+
+        <!-- Спливаюче вікно -->
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <h2>Успішна реєстрація!</h2><br>
+                <p>Очікуйте на прийняття заявки вчителем.</p>
+            </div>
         </div>
     </div>
 
