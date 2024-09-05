@@ -1,0 +1,108 @@
+/* iNDEX.HTML*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle, rgba(0, 0, 20, 1) 0%, rgba(0, 0, 40, 1) 100%);
+    overflow: hidden;
+    font-family: Arial, sans-serif; /* Додати шрифт для заголовка */
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.title {
+    position: absolute;
+    top: 40%; /* Зменшити відстань від верхньої частини екрана */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 5rem; /* Розмір шрифту */
+    color: rgba(255, 255, 255, 1); /* Колір тексту з прозорістю */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Тінь для кращої видимості */
+    font-weight: bold; /* Товщина шрифту */
+}
+
+.titlev2 {
+    position: absolute;
+    top: 20%; /* Зменшити відстань від верхньої частини екрана */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 5rem; /* Розмір шрифту */
+    color: rgba(255, 255, 255, 1); /* Колір тексту з прозорістю */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Тінь для кращої видимості */
+    font-weight: bold; /* Товщина шрифту */
+}
+
+.buttons {
+    position: absolute;
+    top: 55%; /* Розмістити кнопки під заголовком */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 50px; /* Відстань між кнопками */
+}
+
+.btn {
+    display: inline-block; /* Щоб посилання виглядало як кнопка */
+    padding: 10px;
+    width: 150px; /* Ширина кнопки */
+    height: 50px; /* Висота кнопки */
+    font-size: 1.2rem;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.15); /* Напівпрозорий фон */
+    border: none;
+    border-radius: 12px; /* Заокруглені краї */
+    cursor: pointer;
+    text-align: center; /* Вирівнювання тексту по центру */
+    line-height: 30px; /* Вирівнювання тексту по вертикалі */
+    text-decoration: none; /* Прибрати підкреслення посилання */
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+.btn:hover {
+    background: rgba(255, 255, 255, 0.3); /* Зміна фону при наведенні */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Тінь при наведенні */
+}
+
+/* styles.css */
+
+/* Контейнер для форми логіну */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Відстань між елементами */
+    align-items: center;
+}
+
+/* Поля вводу */
+.login-form input {
+    padding: 10px;
+    width: 250px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+/* Кнопка Увійти */
+.login-form .btn {
+    width: 250px; /* Ширина кнопки */
+    height: 50px; /* Висота кнопки */
+    font-size: 1.2rem;
+    text-align: center; /* Вирівнювання тексту по центру */
+    line-height: 30px; /* Вирівнювання тексту по вертикалі */
+    background: rgba(255, 255, 255, 0.15); /* Напівпрозорий фон */
+}
+
+
+
