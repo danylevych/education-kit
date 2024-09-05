@@ -1,6 +1,3 @@
-
-//iNDEX.HTML
-
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
@@ -202,23 +199,37 @@ window.addEventListener('resize', () => {
 });
 
 
-document.addEventListener("DOMContentLoaded", function () {
-    const step1 = document.getElementById("step1");
-    const step2 = document.getElementById("step2");
-    const nextStepBtn = document.getElementById("nextStepBtn");
-    const prevStepBtn = document.getElementById("prevStepBtn");
+document.addEventListener('DOMContentLoaded', function() {
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const nextStepBtn = document.getElementById('nextStepBtn');
+    const prevStepBtn = document.getElementById('prevStepBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const popup = document.getElementById('popup');
 
-    // Обробник для кнопки "Далі"
-    nextStepBtn.addEventListener("click", function (event) {
-        event.preventDefault(); // Зупинити стандартну поведінку кнопки (посилання)
-        step1.style.display = "none"; // Приховати крок 1
-        step2.style.display = "block"; // Показати крок 2
+    nextStepBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        step1.style.display = 'none';
+        step2.style.display = 'block';
     });
 
-    // Обробник для кнопки "Назад"
-    prevStepBtn.addEventListener("click", function (event) {
-        event.preventDefault(); // Зупинити стандартну поведінку кнопки (посилання)
-        step1.style.display = "block"; // Показати крок 1
-        step2.style.display = "none"; // Приховати крок 2
+    prevStepBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        step1.style.display = 'block';
+        step2.style.display = 'none';
+    });
+
+    submitBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        popup.style.display = 'flex';
+
+        // Перенаправлення після 3 секунд
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 3000);
     });
 });
+
+
+
