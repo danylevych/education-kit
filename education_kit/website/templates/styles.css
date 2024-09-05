@@ -1,5 +1,3 @@
-/* iNDEX.HTML*/
-
 * {
     margin: 0;
     padding: 0;
@@ -8,6 +6,7 @@
 
 body, html {
     height: 100%;
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -20,11 +19,25 @@ canvas {
     position: absolute;
     top: 0;
     left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Зробити так, щоб canvas був позаду всіх інших елементів */
+}
+
+.title-main {
+    position: absolute;
+    top: 40%; /* Опустити заголовок на 30% */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 5rem; /* Розмір шрифту */
+    color: rgba(255, 255, 255, 1); /* Колір тексту з прозорістю */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Тінь для кращої видимості */
+    font-weight: bold; /* Товщина шрифту */
 }
 
 .title {
     position: absolute;
-    top: 40%; /* Зменшити відстань від верхньої частини екрана */
+    top: 30%; /* Опустити заголовок на 30% */
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 5rem; /* Розмір шрифту */
@@ -33,24 +46,31 @@ canvas {
     font-weight: bold; /* Товщина шрифту */
 }
 
-.titlev2 {
+.form-container {
     position: absolute;
-    top: 20%; /* Зменшити відстань від верхньої частини екрана */
+    top: 53.5%; /* Розміщення форми */
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 5rem; /* Розмір шрифту */
-    color: rgba(255, 255, 255, 1); /* Колір тексту з прозорістю */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Тінь для кращої видимості */
-    font-weight: bold; /* Товщина шрифту */
+    text-align: center;
+    width: 300px; /* Ширина контейнера форми */
+}
+
+.form-container-sign {
+    position: absolute;
+    top: 65%; /* Розміщення форми */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 300px; /* Ширина контейнера форми */
 }
 
 .buttons {
     position: absolute;
-    top: 55%; /* Розмістити кнопки під заголовком */
+    top: 50%; /* Розмістити кнопки під заголовком */
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 50px; /* Відстань між кнопками */
+    gap: 20px; /* Відстань між кнопками */
 }
 
 .btn {
@@ -75,34 +95,85 @@ canvas {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Тінь при наведенні */
 }
 
-/* styles.css */
-
-/* Контейнер для форми логіну */
-.login-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* Відстань між елементами */
-    align-items: center;
+.input-field {
+    display: block;
+    width: 100%; /* Ширина полів для вводу */
+    height: 40px; /* Висота полів для вводу */
+    margin: 40px 0; /* Відстань між полями */
+    padding: 0 10px; /* Внутрішні відступи */
+    border: 2px solid #fff; /* Біла обводка */
+    border-radius: 8px; /* Заокруглені краї */
+    background: rgba(255, 255, 255, 0); /* Прозорий фон */
+    color: #fff; /* Колір тексту */
+    font-size: 1rem; /* Розмір шрифту */
+    outline: none; /* Видалення обводки при фокусі */
+    box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.3); /* Тінь всередині полів */
 }
 
-/* Поля вводу */
-.login-form input {
-    padding: 10px;
-    width: 250px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
+.btn-submit {
+    display: inline-block; /* Щоб кнопка виглядала як кнопка */
+    padding: 10px 20px;
+    width: 70%; /* Ширина кнопки підходить до ширини контейнера */
+    height: 40px; /* Висота кнопки */
     font-size: 1rem;
-}
-
-/* Кнопка Увійти */
-.login-form .btn {
-    width: 250px; /* Ширина кнопки */
-    height: 50px; /* Висота кнопки */
-    font-size: 1.2rem;
-    text-align: center; /* Вирівнювання тексту по центру */
-    line-height: 30px; /* Вирівнювання тексту по вертикалі */
+    color: #fff;
     background: rgba(255, 255, 255, 0.15); /* Напівпрозорий фон */
+    border: none;
+    border-radius: 8px; /* Заокруглені краї */
+    cursor: pointer;
+    text-align: center; /* Вирівнювання тексту по центру */
+    line-height: 20px; /* Вирівнювання тексту по вертикалі */
+    text-decoration: none; /* Прибрати підкреслення посилання */
+    transition: background 0.3s, box-shadow 0.3s;
 }
 
+.btn-submit:hover {
+    background: rgba(255, 255, 255, 0.3); /* Зміна фону при наведенні */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Тінь при наведенні */
+}
 
+/* Стилізація кнопки-іконки */
+.home-icon {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: white;
+    font-size: 1rem; /* Розмір іконки */
+    text-decoration: none;
+    background-color: rgba(255, 255, 255, 0.15); /* Напівпрозорий фон */
+    padding: 10px;
+    border-radius: 50%; /* Кругла форма кнопки */
+    transition: background-color 0.3s;
+}
 
+.home-icon:hover {
+    background-color: rgba(255, 255, 255, 0.3); /* Зміна фону при наведенні */
+}
+
+.home-icon i {
+    pointer-events: none; /* Щоб іконка не заважала кліку */
+}
+
+/* Стилізація іконки стрілки для повернення */
+.icon-container {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 50px;
+}
+
+/* Стиль для стрілки без фону та без круглої обгортки */
+.back-icon {
+    position: absolute;
+    left: -40px; /* Відступ вліво від поля "Логін" */
+    top: 45px;
+    font-size: 1.5rem;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.back-icon:hover {
+    color: rgba(255, 255, 255, 0.7); /* Зміна кольору при наведенні */
+}

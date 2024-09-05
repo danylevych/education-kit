@@ -200,3 +200,25 @@ window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 });
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const step1 = document.getElementById("step1");
+    const step2 = document.getElementById("step2");
+    const nextStepBtn = document.getElementById("nextStepBtn");
+    const prevStepBtn = document.getElementById("prevStepBtn");
+
+    // Обробник для кнопки "Далі"
+    nextStepBtn.addEventListener("click", function(event) {
+        event.preventDefault(); // Зупинити стандартну поведінку кнопки (посилання)
+        step1.style.display = "none"; // Приховати крок 1
+        step2.style.display = "block"; // Показати крок 2
+    });
+
+    // Обробник для кнопки "Назад"
+    prevStepBtn.addEventListener("click", function(event) {
+        event.preventDefault(); // Зупинити стандартну поведінку кнопки (посилання)
+        step1.style.display = "block"; // Показати крок 1
+        step2.style.display = "none"; // Приховати крок 2
+    });
+});
