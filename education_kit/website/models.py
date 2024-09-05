@@ -1,79 +1,81 @@
 from django.db import models
 
-class Classes(models.Model):
-    name = models.CharField(max_length=35)
-    supervisor = models.ForeignKey('Teachers', models.DO_NOTHING, blank=True, null=True, related_name='supervised_classes')
+class User(models.Model):
+    STUDENT = 'student'
+    TEACHER = 'teacher'
+    USER_TYPES = [
+        (STUDENT, 'Student'),
+        (TEACHER, 'Teacher')
+    ]
 
-    class Meta:
-        managed = False
-        db_table = 'Classes'
-
-class Meetings(models.Model):
-    reference = models.CharField(max_length=255)
-    description = models.CharField(max_length=255, blank=True, null=True)
-    timestamp = models.DateTimeField(blank=True, null=True)
-    subject = models.ForeignKey('Subjects', models.DO_NOTHING, blank=True, null=True, related_name='meetings')
-
-    class Meta:
-        managed = False
-        db_table = 'Meetings'
-
-class Requests(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     father_name = models.CharField(max_length=255)
-    login = models.CharField(unique=True, max_length=255)
+    login = models.CharField(max_length=255, unique=True)
     password = models.CharField(max_length=255)
-    class_field = models.ForeignKey(Classes, models.DO_NOTHING, db_column='class_id', blank=True, null=True, related_name='requests')
+    type = models.CharField(max_length=7, choices=USER_TYPES)
+    photo = models.BinaryField(blank=True, null=True)
 
-    class Meta:
-        managed = False
-        db_table = 'Requests'
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
 
-class Students(models.Model):
-    user = models.ForeignKey('Users', models.DO_NOTHING, related_name='students')
-    class_field = models.ForeignKey(Classes, models.DO_NOTHING, db_column='class_id', blank=True, null=True, related_name='students')
+class Teacher(models.Model):
+    phone = models.CharField(max_length=20)
+    email = models.EmailField(max_length=255)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-    class Meta:
-        managed = False
-        db_table = 'Students'
+    def __str__(self):
+        return self.user.first_name
 
-class Subjects(models.Model):
+class Class(models.Model):
+    name = models.CharField(max_length=35)
+    supervisor = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+class Student(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    class_id = models.ForeignKey(Class, on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return self.user.first_name
+
+class Subject(models.Model):
     name = models.CharField(max_length=120)
     description = models.CharField(max_length=255, blank=True, null=True)
-    photo = models.TextField(blank=True, null=True)
-    teacher = models.ForeignKey('Teachers', models.DO_NOTHING, blank=True, null=True, related_name='subjects')
+    photo = models.BinaryField(blank=True, null=True)
+    teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True)
 
-    class Meta:
-        managed = False
-        db_table = 'Subjects'
+    def __str__(self):
+        return self.name
 
-class Teachers(models.Model):
-    phone = models.CharField(max_length=20)
-    email = models.CharField(max_length=255)
-    user = models.ForeignKey('Users', models.DO_NOTHING, related_name='teacher_profile')
-
-    class Meta:
-        managed = False
-        db_table = 'Teachers'
-
-class TeachersClasses(models.Model):
-    teacher = models.ForeignKey(Teachers, models.DO_NOTHING, blank=True, null=True, related_name='teacher_classes')
-    class_field = models.ForeignKey(Classes, models.DO_NOTHING, db_column='class_id', blank=True, null=True, related_name='teachers_classes')
-
-    class Meta:
-        managed = False
-        db_table = 'TeachersClasses'
-
-class Users(models.Model):
+class Request(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     father_name = models.CharField(max_length=255)
-    login = models.CharField(unique=True, max_length=255)
+    login = models.CharField(max_length=255, unique=True)
     password = models.CharField(max_length=255)
-    type = models.CharField(max_length=7)
-    photo = models.TextField(blank=True, null=True)
+    class_id = models.ForeignKey(Class, on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return self.login
+
+class Meeting(models.Model):
+    reference = models.CharField(max_length=255)
+    description = models.CharField(max_length=255, blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return self.reference
+
+class TeachersClassesSubject(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    class_id = models.ForeignKey(Class, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
 
     class Meta:
-        managed = False
-        db_table = 'Users'
+        constraints = [
+            models.UniqueConstraint(fields=['teacher', 'class_id', 'subject'], name='unique_teacher_class_subject')
+        ]

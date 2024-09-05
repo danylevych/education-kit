@@ -1,12 +1,12 @@
 from django.contrib import admin
-from .models import Classes, Meetings, Requests, Students, Subjects, Teachers, TeachersClasses, Users
+from .models import User, Class, Meeting, Request, Student, Subject, Teacher, TeachersClassesSubject
 
 # Register your models here.
-admin.site.register(Users)
-admin.site.register(Classes)
-admin.site.register(Meetings)
-admin.site.register(Requests)
-admin.site.register(Students)
-admin.site.register(Subjects)
-admin.site.register(Teachers)
-admin.site.register(TeachersClasses)
+admin.site.register(User)
+admin.site.register(Class)
+admin.site.register(Meeting)
+admin.site.register(Request)
+admin.site.register(Student)
+admin.site.register(Subject)
+admin.site.register(Teacher)
+admin.site.register(TeachersClassesSubject)
