@@ -197,39 +197,3 @@ window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 });
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    const step1 = document.getElementById('step1');
-    const step2 = document.getElementById('step2');
-    const nextStepBtn = document.getElementById('nextStepBtn');
-    const prevStepBtn = document.getElementById('prevStepBtn');
-    const submitBtn = document.getElementById('submitBtn');
-    const popup = document.getElementById('popup');
-
-    nextStepBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        step1.style.display = 'none';
-        step2.style.display = 'block';
-    });
-
-    prevStepBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        step1.style.display = 'block';
-        step2.style.display = 'none';
-    });
-
-    submitBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-
-        popup.style.display = 'flex';
-
-        // Перенаправлення після 3 секунд
-        setTimeout(() => {
-            window.location.href = 'index.html';
-        }, 3000);
-    });
-});
-
-
-

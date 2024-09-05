@@ -7,6 +7,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <style>
         /* Стилі для спливаючого вікна */
         .popup {
@@ -38,56 +39,184 @@
             color: rgb(226, 226, 226);
             font-size: 2rem;
         }
+
+        /* Style for alert container */
+        #liveAlertPlaceholder {
+            position: fixed;
+            top: 10px;
+            z-index: 1000;
+        }
+        /* Стиль для сповіщення */
+        .alert {
+            background-color: rgba(241, 66, 66, 0.9); /* Яскравіший фон для кращої видимості */
+            color: #fff; /* Білий текст для контрасту */
+            border-radius: 8px; /* Закруглені краї */
+            padding: 15px 20px; /* Відступи всередині сповіщення */
+            margin: 10px 0; /* Відступи між сповіщеннями */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тінь для об'ємності */
+            font-size: 1rem; /* Розмір шрифту */
+            position: relative; /* Для позиціювання кнопки закриття */
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; /* Плавна анімація появи і зникнення */
+        }
+
+        .alert.success {
+            background-color: rgba(40, 167, 69, 0.9); /* Зелений фон для успішних повідомлень */
+        }
+
+        .alert.warning {
+            background-color: rgba(255, 193, 7, 0.9); /* Жовтий фон для попереджень */
+        }
+
+        .alert.info {
+            background-color: rgba(23, 162, 184, 0.9); /* Синій фон для інформаційних повідомлень */
+        }
+
+        .alert .btn-close {
+            position: absolute; /* Позиціонування кнопки закриття */
+            top: 10px;
+            right: 10px;
+            color: #fff; /* Колір кнопки закриття */
+        }
+
+        /* Анімація появи */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Анімація зникнення */
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-20px); }
+        }
+
+        .alert.fade-out {
+            animation: fadeOut 0.5s ease-in-out; /* Анімація зникнення */
+        }
+
+
     </style>
 </head>
 <body>
     <canvas id="canvas"></canvas>
 
     <!-- Кнопка-іконка для повернення на головну сторінку -->
-    <a href="index.html" class="home-icon">
+    <a href="{% url 'home' %}" class="home-icon">
         <i class="fas fa-home"></i>
     </a>
-    
+
+    <!-- Місце для сповіщення -->
+    <span id="liveAlertPlaceholder"></span>
+
     <div class="content">
         <h1 class="title">EDUCATION KIT</h1>
-        
-        <!-- Крок 1: Поля для вводу прізвища, імені, по батькові, вибір класу -->
-        <div class="form-container-sign" id="step1">
-            <input type="text" id="lastName" placeholder="Прізвище" class="input-field">
-            <input type="text" id="firstName" placeholder="Ім'я" class="input-field">
-            <input type="text" id="fatherName" placeholder="По батькові" class="input-field">
-            
-            <!-- Випадаючий список для вибору класу -->
-            <select id="classSelect" class="input-field">
-                <option value="" disabled selected>Оберіть клас</option>
-            </select>
 
-            <!-- Кнопка для переходу до кроку 2 -->
-            <a href="#" class="btn-submit" id="nextStepBtn">Далі</a>
-        </div>
+        <!-- Форма реєстрації -->
+        <form method="POST" action="{% url 'register' %}" id="registrationForm">
+            {% csrf_token %}
+            <!-- Крок 1: Поля для вводу прізвища, імені, по батькові, вибір класу -->
+            <div class="form-container-sign" id="step1">
+                <input type="text" name="last_name" id="lastName" placeholder="Прізвище" class="input-field">
+                <input type="text" name="first_name" id="firstName" placeholder="Ім'я" class="input-field">
+                <input type="text" name="father_name" id="fatherName" placeholder="По батькові" class="input-field">
 
-        <!-- Крок 2: Поля для вводу логіну та паролю -->
-        <div class="form-container-sign" id="step2" style="display: none;">
-            <!-- Іконка стрілки для повернення -->
-            <a href="#" id="prevStepBtn" class="back-icon">
-                <i class="fas fa-arrow-left"></i>
-            </a>
-            <input type="text" id="login" placeholder="Логін" class="input-field">
-            <input type="password" id="password" placeholder="Пароль" class="input-field">
-            <input type="password" id="repeatPassword" placeholder="Повторіть пароль" class="input-field">
+                <!-- Випадаючий список для вибору класу -->
+                <select name="class_id" id="classSelect" class="input-field">
+                    <option value="" disabled selected>Оберіть клас</option>
+                    {% for class in classes %}
+                        <option value="{{ class.id }}">{{ class.name }}</option>
+                    {% endfor %}
+                </select>
 
-            <!-- Кнопка для входу -->
-            <a href="#" id="submitBtn" class="btn-submit">Увійти</a>
-        </div>
+                <!-- Кнопка для переходу до кроку 2 -->
+                <a href="#" class="btn-submit" id="nextStepBtn">Далі</a>
+            </div>
+
+            <!-- Крок 2: Поля для вводу логіну та паролю -->
+            <div class="form-container-sign" id="step2" style="display: none;">
+                <!-- Іконка стрілки для повернення -->
+                <a href="#" id="prevStepBtn" class="back-icon">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <input type="text" name="login" id="login" placeholder="Логін" class="input-field">
+                <input type="password" name="password" id="password" placeholder="Пароль" class="input-field">
+                <input type="password" name="confirm_password" id="repeatPassword" placeholder="Повторіть пароль" class="input-field">
+
+                <!-- Кнопка для відправки форми -->
+                <button type="submit" class="btn-submit" id="submitBtn">Увійти</button>
+            </div>
+        </form>
 
         <!-- Спливаюче вікно -->
         <div id="popup" class="popup">
             <div class="popup-content">
-                <h2>Успішна реєстрація!</h2><br>
+                <h2>Успішна реєстрація!</h2>
                 <p>Очікуйте на прийняття заявки вчителем.</p>
             </div>
         </div>
     </div>
-    <script src="{% static 'script.js' %}"></script>
+
+    <script src="{% static 'script.js' %}" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showAlert(message, type = 'warning') {
+            const alertPlaceholder = document.getElementById('liveAlertPlaceholder');
+            if (!alertPlaceholder) {
+                console.error('Element with ID "liveAlertPlaceholder" not found.');
+                return;
+            }
+
+            // Видалення всіх існуючих сповіщень, залишаючи тільки одне
+            const existingAlerts = alertPlaceholder.querySelectorAll('.alert');
+            if (existingAlerts.length > 0) {
+                existingAlerts[0].classList.add('fade-out');
+                setTimeout(() => existingAlerts[0].remove(), 500); // Затримка на анімацію зникнення
+            }
+
+            // Створення нового сповіщення
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = `
+                <div class="alert" role="alert">
+                    <div>${message}</div>
+                </div>
+            `;
+            alertPlaceholder.append(wrapper);
+
+            // Автоматичне приховування сповіщення через 7 секунд
+            setTimeout(() => {
+                wrapper.querySelector('.alert').classList.add('fade-out');
+                setTimeout(() => wrapper.remove(), 500); // Затримка на анімацію зникнення
+            }, 3000);
+        }
+
+        // Перевірка заповнення полів для кроку 1
+        document.getElementById('nextStepBtn').addEventListener('click', function (event) {
+            const lastName = document.getElementById('lastName').value;
+            const firstName = document.getElementById('firstName').value;
+            const fatherName = document.getElementById('fatherName').value;
+            const classSelect = document.getElementById('classSelect').value;
+
+            if (!lastName || !firstName || !fatherName || !classSelect) {
+                event.preventDefault(); // Заборонити перехід на наступний крок
+                showAlert('Будь ласка, заповніть усі поля для Кроку 1.');
+            } else {
+                // Показати наступний крок
+                document.getElementById('step1').style.display = 'none';
+                document.getElementById('step2').style.display = 'block';
+            }
+        });
+
+        // Перевірка полів для кроку 2
+        document.getElementById('submitBtn').addEventListener('click', function (event) {
+            const login = document.getElementById('login').value;
+            const password = document.getElementById('password').value;
+            const repeatPassword = document.getElementById('repeatPassword').value;
+
+            if (!login || !password || !repeatPassword || password !== repeatPassword) {
+                event.preventDefault(); // Заборонити відправку форми
+                showAlert('Будь ласка, введіть всі поля для Кроку 2 і переконайтеся, що паролі збігаються.');
+            }
+        });
+    </script>
 </body>
 </html>
