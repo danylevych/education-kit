@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Education Kit</title>
-    <link rel="stylesheet" href="styles.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
     <canvas id="canvas"></canvas>
     <div class="title-main">EDUCATION KIT</div>
     <div class="buttons">
-        <a href="login.html" class="btn">Вхід</a>
-        <a href="register.html" class="btn">Реєстрація</a>
+        <a href="{% url 'login' %}" class="btn">Вхід</a>
+        <a href="{% url 'register' %}" class="btn">Реєстрація</a>
     </div>
-    <script src="script.js"></script>
+    <script src="{% static 'script.js' %}"></script>
 </body>
 </html>
