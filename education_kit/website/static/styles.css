@@ -24,6 +24,17 @@ canvas {
     z-index: -1; /* Зробити так, щоб canvas був позаду всіх інших елементів */
 }
 
+.title-home {
+    position: absolute;
+    top: 8%; /* Опустити заголовок на 30% */
+    left: 20%;
+    transform: translate(-50%, -50%);
+    font-size: 4rem; /* Розмір шрифту */
+    color: rgba(255, 255, 255, 1); /* Колір тексту з прозорістю */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Тінь для кращої видимості */
+    font-weight: bold; /* Товщина шрифту */
+}
+
 .title-main {
     position: absolute;
     top: 40%; /* Опустити заголовок на 30% */
@@ -182,6 +193,30 @@ canvas {
 
 .back-icon:hover {
     color: rgba(255, 255, 255, 0.7); /* Зміна кольору при наведенні */
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: rgba(255, 255, 255, 0); /* Прозорий фон з білою обводкою */
+    border: 2px solid #fff; /* Біла обводка */
+    border-radius: 8px; /* Заокруглені краї */
+    padding: 10px 20px; /* Внутрішні відступи */
+    margin: 20px 0; /* Відступ зверху і знизу */
+}
+
+.navbar a {
+    color: #fff; /* Білий колір тексту */
+    text-decoration: none; /* Вимкнення підкреслення посилань */
+    padding: 10px 15px; /* Внутрішні відступи посилань */
+    border-radius: 8px; /* Заокруглені краї елементів меню */
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+.navbar a:hover {
+    background: rgba(255, 255, 255, 0.15); /* Легка зміна фону при наведенні */
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.15); /* Тінь при наведенні */
 }
 
 
