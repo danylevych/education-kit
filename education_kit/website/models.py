@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.hashers import make_password, check_password
+
 
 class User(models.Model):
     STUDENT = 'student'
@@ -15,6 +17,13 @@ class User(models.Model):
     password = models.CharField(max_length=255)
     type = models.CharField(max_length=7, choices=USER_TYPES)
     photo = models.BinaryField(blank=True, null=True)
+
+
+    def set_password(self, raw_password):
+        self.password = make_password(raw_password)
+
+    def check_password(self, raw_password):
+        return check_password(raw_password, self.password)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -57,6 +66,13 @@ class Request(models.Model):
     login = models.CharField(max_length=255, unique=True)
     password = models.CharField(max_length=255)
     class_id = models.ForeignKey(Class, on_delete=models.SET_NULL, null=True, blank=True)
+
+
+    def set_password(self, raw_password):
+        self.password = make_password(raw_password)
+
+    def check_password(self, raw_password):
+        return check_password(raw_password, self.password)
 
     def __str__(self):
         return self.login
