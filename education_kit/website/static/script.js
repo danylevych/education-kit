@@ -204,9 +204,9 @@ function showAlert(message, where, type = 'warning') {
 
 //HOME PAGE
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const role = getRoleFromURL();
-    
+
     if (role === 'student') {
         document.getElementById('student-content').style.display = 'block';
     } else if (role === 'teacher') {
@@ -222,4 +222,23 @@ function getRoleFromURL() {
     return urlParams.get('role'); // Повертає "student" або "teacher"
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+    // Функція для автоматичного зникнення сповіщення
+    function autoDismissAlert() {
+        const alertElement = document.querySelector('.alert');
+        if (alertElement) {
+            // Через 3 секунди додаємо клас для зникнення
+            setTimeout(function () {
+                alertElement.classList.add('fade-out');
+                // Після завершення анімації видаляємо елемент з DOM
+                setTimeout(function () {
+                    alertElement.remove();
+                }, 500); // Тривалість анімації (має відповідати часу анімації CSS)
+            }, 3000); // 3 секунди перед зникненням
+        }
+    }
+
+    // Викликаємо функцію
+    autoDismissAlert();
+});
 
