@@ -1,0 +1,50 @@
+/* Базовий стиль для сповіщення */
+.alert {
+    color: #fff; /* Білий текст для контрасту */
+    border-radius: 8px; /* Закруглені краї */
+    padding: 15px 20px; /* Відступи всередині сповіщення */
+    margin: 10px 0; /* Відступи між сповіщеннями */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тінь для об'ємності */
+    font-size: 1rem; /* Розмір шрифту */
+    position: relative; /* Для позиціювання кнопки закриття */
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; /* Плавна анімація появи і зникнення */
+}
+
+/* Успішне сповіщення */
+.alert.success {
+    background-color: rgba(40, 167, 69, 0.9); /* Зелений фон для успішних повідомлень */
+}
+
+/* Попереджувальне сповіщення */
+.alert.warning {
+    background-color: rgba(255, 193, 7, 0.9); /* Жовтий фон для попереджень */
+    color: #000; /* Чорний текст для кращої видимості на жовтому фоні */
+}
+
+/* Сповіщення про помилку */
+.alert.error {
+    background-color: rgba(220, 53, 69, 0.9); /* Червоний фон для помилок */
+}
+
+/* Інформаційне сповіщення */
+.alert.info {
+    background-color: rgba(23, 162, 184, 0.9); /* Синій фон для інформаційних повідомлень */
+}
+
+/* Анімація появи */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Анімація зникнення */
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-20px); }
+}
+
+/* Додатковий клас для анімації зникнення */
+.alert.fade-out {
+    animation: fadeOut 0.5s ease-in-out; /* Анімація зникнення */
+    opacity: 0; /* Встановлюємо opacity для завершення анімації */
+}

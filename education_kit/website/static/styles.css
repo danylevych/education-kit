@@ -110,6 +110,12 @@ canvas {
     box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.3); /* Тінь всередині полів */
 }
 
+.option {
+    color: rgb(186, 178, 178);
+    background-color:  rgba(255, 255, 255, 0.1);
+}
+
+
 .btn-submit {
     display: inline-block; /* Щоб кнопка виглядала як кнопка */
     padding: 10px 20px;
