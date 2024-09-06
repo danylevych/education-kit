@@ -26,8 +26,8 @@ canvas {
 
 .title-home {
     position: absolute;
-    top: 8%; /* Опустити заголовок на 30% */
-    left: 20%;
+    top: 10%; /* Опустити заголовок на 30% */
+    left: 50%;
     transform: translate(-50%, -50%);
     font-size: 4rem; /* Розмір шрифту */
     color: rgba(255, 255, 255, 1); /* Колір тексту з прозорістю */
@@ -195,28 +195,72 @@ canvas {
     color: rgba(255, 255, 255, 0.7); /* Зміна кольору при наведенні */
 }
 
+/* Стиль для navbar */
 .navbar {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    background: rgba(255, 255, 255, 0); /* Прозорий фон з білою обводкою */
+    background: rgba(255, 255, 255, 0); /* Прозорий фон */
     border: 2px solid #fff; /* Біла обводка */
     border-radius: 8px; /* Заокруглені краї */
-    padding: 10px 20px; /* Внутрішні відступи */
-    margin: 20px 0; /* Відступ зверху і знизу */
+    padding: 10px 20px;
+    position: absolute; /* Позиціонування відносно батьківського елемента */
+    top: 20%; /* Відступ вниз після заголовка */
+    left: 10%; /* Вирівнювання по лівому краю */
+    right: 10%; /* Вирівнювання по правому краю */
+    margin: 0 auto; /* Вирівнювання по центру горизонтально */
+    z-index: 999; /* Впевнюємося, що navbar вище всіх інших елементів */
+}
+
+/* Стиль для контейнера форми */
+.form-container-student {
+    position: absolute; /* Позиціонування відносно батьківського елемента */
+    top: calc(20% + 60px); /* Відступ вниз від navbar (20% для navbar + висота navbar, якщо потрібно коригування) */
+    left: 8.65%; /* Відступ від лівого краю */
+    right: 8.65%; /* Відступ від правого краю */
+    bottom: 0; /* Притиснути донизу */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+/* Стиль для контейнера форми */
+.form-container-teacher {
+    position: absolute; /* Позиціонування відносно батьківського елемента */
+    top: calc(20% + 60px); /* Відступ вниз від navbar (20% для navbar + висота navbar, якщо потрібно коригування) */
+    left: 8.65%; /* Відступ від лівого краю */
+    right: 8.65%; /* Відступ від правого краю */
+    bottom: 0; /* Притиснути донизу */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+/* Додатковий стиль для форми, якщо потрібно */
+form {
+    width: 100%;
+    background: rgba(255, 255, 255, 0); /* Прозорий фон */
+    border: 2px solid #fff; /* Біла обводка */
+    padding: 20px;
+    border-radius: 8px;
 }
 
 .navbar a {
-    color: #fff; /* Білий колір тексту */
-    text-decoration: none; /* Вимкнення підкреслення посилань */
-    padding: 10px 15px; /* Внутрішні відступи посилань */
-    border-radius: 8px; /* Заокруглені краї елементів меню */
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 8px;
     transition: background 0.3s, box-shadow 0.3s;
 }
 
 .navbar a:hover {
-    background: rgba(255, 255, 255, 0.15); /* Легка зміна фону при наведенні */
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.15); /* Тінь при наведенні */
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
 }
+
 
 
