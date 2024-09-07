@@ -267,6 +267,28 @@ a {
     border-radius: 5px;
 }
 
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    top: 17%; /* Відстань від верхнього краю */
+    left: 10%; /* Вирівнювання по лівому краю */
+    right: 10%; /* Вирівнювання по правому краю */
+    padding: 0 20px;
+    z-index: 999;
+}
+
+.user-info {
+    color: white;
+    font-size: 1.2rem;
+}
+
+.clock {
+    color: white;
+    font-size: 1.2rem;
+}
+
 body {
     height: 80%;
     width: 100%;
@@ -407,3 +429,88 @@ body {
     font-size: 1em;
     color: #ddd;
 }
+
+
+/* Контейнер для налаштувань */
+.settings-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border: 2px solid #fff;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin: 0 auto;
+    width: 80%;
+    margin-top: 180px;
+    color: #fff;
+}
+
+/* Рядки форми */
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-left: 25px;
+    margin-top: 30px;
+    margin-bottom: 30px; /* Відстань між рядками полів */
+    align-items: center;
+}
+
+/* Стиль для лейблів */
+label {
+    width: 33%; /* Відповідає ширині поля для введення */
+    font-size: 1rem; /* Розмір шрифту лейбла */
+    color: #fff;
+    margin-bottom: 0px; /* Менша відстань між лейблом та полем вводу */
+}
+
+/* Поля для введення */
+.input-settings-field {
+    display: block;
+    width: 60%; /* Поле займає більше місця */
+    height: 40px; /* Висота полів для вводу */
+    margin: 0 50px 0 50px; /* Відстань між полями з боків і додатковий відступ знизу */
+    padding: 20px; /* Внутрішні відступи */
+    border: 2px solid #fff; /* Біла обводка */
+    border-radius: 8px; /* Заокруглені краї */
+    background: rgba(255, 255, 255, 0); /* Прозорий фон */
+    color: #fff; /* Колір тексту */
+    font-size: 1rem; /* Розмір шрифту */
+    outline: none; /* Видалення обводки при фокусі */
+    box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.3); /* Тінь всередині полів */
+    margin-top: 5px; /* Зменшений відступ між лейблом і полем */
+}
+
+/* Контейнер для кнопки */
+.button-container {
+    display: flex;
+    justify-content: flex-end; /* Вирівнювання кнопки по правому краю */
+    width: 100%;
+    margin-top: 40px; /* Відстань між полями і кнопкою */
+}
+
+/* Кнопка для збереження */
+.btn-settings-submit {
+    padding: 10px 20px;
+    width: 18%; /* Ширина кнопки */
+    height: 40px; /* Висота кнопки */
+    font-size: 1rem;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.15); /* Напівпрозорий фон */
+    border: none;
+    border-radius: 8px; /* Заокруглені краї */
+    cursor: pointer;
+    text-align: center; /* Вирівнювання тексту по центру */
+    line-height: 20px; /* Вирівнювання тексту по вертикалі */
+    text-decoration: none; /* Прибрати підкреслення посилання */
+    transition: background 0.3s, box-shadow 0.3s;
+    margin-bottom: 20px; /* Відступ знизу */
+    margin-right: 25px; /* Відступ справа */
+}
+
+.btn-settings-submit:hover {
+    background: rgba(255, 255, 255, 0.3); /* Трохи світліший фон при наведенні */
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2); /* Тінь при наведенні */
+}
+
+

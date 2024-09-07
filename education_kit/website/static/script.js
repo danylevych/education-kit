@@ -223,3 +223,12 @@ document.addEventListener('DOMContentLoaded', function () {
     autoDismissAlert();
 });
 
+function updateClock() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    document.querySelector('.clock').textContent = `${hours}:${minutes}`;
+}
+
+setInterval(updateClock, 1000); // Оновлювати годинник кожну секунду
+updateClock(); // Оновлюємо годинник відразу при завантаженні сторінки
