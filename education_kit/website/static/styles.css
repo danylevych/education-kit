@@ -272,7 +272,7 @@ a {
     justify-content: space-between;
     align-items: center;
     position: absolute;
-    top: 17%; /* Відстань від верхнього краю */
+    top: 16.5%; /* Відстань від верхнього краю */
     left: 10%; /* Вирівнювання по лівому краю */
     right: 10%; /* Вирівнювання по правому краю */
     padding: 0 20px;

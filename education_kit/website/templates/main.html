@@ -6,12 +6,33 @@
     <title>Dashboard</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="{% static 'styles_for_alerts.css' %}?v=1">
+
+    <style>
+        #messages {
+            position: fixed;
+            top: 10px;
+            right: 5%;
+            z-index: 1000;
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
     <div class="header">
         <div class="user-info">{{ request.session.user_full_name }}</div>
         <div class="clock">12:00</div>
     </div>
+
+    {% if messages %}
+        <div id="messages">
+            {% for message in messages %}
+            <div class="alert {{ message.tags }}" >
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
     <canvas id="canvas"></canvas>
 
@@ -20,71 +41,67 @@
     <!-- Меню для студента -->
     {% if request.session.user_type == 'student' %}
         <nav class="navbar">
-            <a id="lessons-btn">Уроки</a>
-            <a id="teachers-btn">Учителі</a>
-            <a id="settings-btn">Налаштування</a>
+            <a id="lessons-btn" href="#">Уроки</a>
+            <a id="teachers-btn" href="#">Учителі</a>
+            <a id="settings-btn" href="#">Налаштування</a>
             <a href="{% url 'logout' %}">Вийти</a>
         </nav>
+
     {% elif request.session.user_type == 'teacher' %}
         <!-- Меню для вчителя -->
         <nav class="navbar">
-            <a href="{% url 'create_lesson' %}">Створити конференцію</a>
-            <a href="{% url 'requests' %}">Запити</a>
-            <a id="settings-btn">Налаштування</a>
+            <a href="">Створити конференцію</a>
+            <a href="">Запити</a>
+            <a id="settings-btn" href="#">Налаштування</a>
             <a href="{% url 'logout' %}">Вийти</a>
         </nav>
     {% endif %}
 
-
     <div id="area"> </div>
-
 
     <script src="{% static 'script.js' %}"></script>
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    // Функція для завантаження уроків
+    function loadLessons() {
+        fetch('/lessons/')
+            .then(response => response.json())
+            .then(data => {
+                let contentArea = document.getElementById('area');
+                contentArea.innerHTML = '';
+                if (data.lessons) {
+                    let lessonsContainerDiv = document.createElement('div');
+                    lessonsContainerDiv.className = 'lessons-container';
 
-    // MAIN STUDENT
-    document.getElementById('lessons-btn').addEventListener('click', function () {
-    fetch('/lessons/')
-        .then(response => response.json())
-        .then(data => {
-            let contentArea = document.getElementById('area');
-            contentArea.innerHTML = '';
-            if (data.lessons) {
-                let lessonsContainerDiv = document.createElement('div');
-                lessonsContainerDiv.className = 'lessons-container';
+                    data.lessons.forEach(lesson => {
+                        let lessonDiv = document.createElement('div');
+                        lessonDiv.className = 'lesson';
+                        lessonDiv.innerHTML = `
+                            <a href="#" class="learn-more-place-holder" data-id="${lesson.id}" style="text-decoration: none; color: inherit;">
+                                <h3>${lesson.name}</h3>
+                                <p>${lesson.description}</p>
+                            </a>
+                        `;
 
-                data.lessons.forEach(lesson => {
-                    let lessonDiv = document.createElement('div');
-                    lessonDiv.className = 'lesson';
-                    lessonDiv.innerHTML = `
-                        <a href="#" class="learn-more-place-holder" data-id="${lesson.id}" style="text-decoration: none; color: inherit;">
-                            <h3>${lesson.name}</h3>
-                            <p>${lesson.description}</p>
-                        </a>
-                    `;
-
-                    lessonsContainerDiv.appendChild(lessonDiv);
-                });
-
-                contentArea.appendChild(lessonsContainerDiv);
-
-                // Додаємо обробник подій після того, як HTML-код вставлено в DOM
-                document.querySelectorAll('.learn-more-place-holder').forEach(button => {
-                    button.addEventListener('click', function (event) {
-                        event.preventDefault(); // Запобігти стандартному переходу за посиланням
-                        const lessonId = this.getAttribute('data-id');
-                        window.location.href = `/lesson/${lessonId}/`; // Перехід на сторінку уроку
+                        lessonsContainerDiv.appendChild(lessonDiv);
                     });
-                });
-            }
-        });
-});
 
+                    contentArea.appendChild(lessonsContainerDiv);
 
+                    // Додаємо обробник подій після того, як HTML-код вставлено в DOM
+                    document.querySelectorAll('.learn-more-place-holder').forEach(button => {
+                        button.addEventListener('click', function (event) {
+                            event.preventDefault(); // Запобігти стандартному переходу за посиланням
+                            const lessonId = this.getAttribute('data-id');
+                            window.location.href = `/lesson/${lessonId}/`; // Перехід на сторінку уроку
+                        });
+                    });
+                }
+            });
+    }
 
-document.addEventListener("DOMContentLoaded", function () {
-    // Обробник для кнопки "Учителі"
-    document.getElementById('teachers-btn').addEventListener('click', function () {
+    // Функція для завантаження вчителів
+    function loadTeachers() {
         fetch('/get_student_teachers/')
             .then(response => response.json())
             .then(data => {
@@ -103,8 +120,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         teacherDiv.innerHTML = `
                             <img src="data:image/png;base64,${teacher.photo}" alt="Teacher Photo" class="teacher-photo" style="width:100px;height:100px;" />
                             <h3>${teacher.name}</h3>
-                            <p style='font-weight: bold; margin-bottom: 5px;'>${teacher.email}<p>
-                            <p style='font-weight: bold;'>${teacher.phone}<p>
+                            <p style='font-weight: bold; margin-bottom: 5px;'>${teacher.email}</p>
+                            <p style='font-weight: bold;'>${teacher.phone}</p>
                         `;
 
                         teachersContainerDiv.appendChild(teacherDiv); // Додаємо картку вчителя у контейнер
@@ -116,20 +133,44 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => {
                 console.error('Error fetching teachers:', error);
             });
-    });
+    }
+
+    // Функція для завантаження налаштувань
+    function loadSettings() {
+        fetch('/settings_partial/')
+            .then(response => response.text())
+            .then(html => {
+                let contentArea = document.getElementById('area');
+                contentArea.innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error fetching settings:', error);
+            });
+    }
+
+    function loadSettings() {
+        fetch('/settings_partial/')
+            .then(response => response.text())
+            .then(html => {
+                let contentArea = document.getElementById('area');
+                contentArea.innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error fetching settings:', error);
+            });
+    }
+
+    // Встановлюємо першу вкладку при завантаженні сторінки для студента
+    if (document.getElementById('lessons-btn')) {
+        // loadLessons(); // Завантажуємо уроки
+    }
+
+    // Додаємо обробники подій до кнопок
+    document.getElementById('lessons-btn')?.addEventListener('click', loadLessons);
+    document.getElementById('teachers-btn')?.addEventListener('click', loadTeachers);
+    document.getElementById('settings-btn')?.addEventListener('click', loadSettings);
 });
 
-document.getElementById('settings-btn').addEventListener('click', function () {
-            fetch('/settings_partial/')
-                .then(response => response.text())
-                .then(html => {
-                    let contentArea = document.getElementById('area');
-                    contentArea.innerHTML = html;
-                })
-                .catch(error => {
-                    console.error('Error fetching settings:', error);
-                });
-        });
 
     </script>
 </body>

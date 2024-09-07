@@ -12,6 +12,7 @@
         #messages {
             position: fixed;
             top: 10px;
+            left: 40%;
             z-index: 1000;
             padding: 10px;
         }
@@ -22,14 +23,15 @@
 
     <!-- Відображення повідомлення -->
     {% if messages %}
-    <div id="messages">
-        {% for message in messages %}
-        <div class="alert error" >
-            {{ message }}
+        <div id="messages">
+            {% for message in messages %}
+                <div class="alert {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
     {% endif %}
+
 
     <!-- Кнопка-іконка для повернення на головну сторінку -->
     <a href="{% url 'home' %}" class="home-icon">

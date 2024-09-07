@@ -27,26 +27,24 @@ def home(request):
     return render(request, 'index.html')
 
 
-@custom_login_required
-def example_view(request):
-    return render(request, 'example.html')
-
 
 def login_view(request):
     if request.method == 'POST':
         login = request.POST['login']
         password = request.POST['password']
+        print(login, password)
 
         user = User.objects.filter(login=login).first()
-
+        print(user.password)
         if user and user.password == password:
             update_session_data(request, user)
+            print ('we are here')
+            print(user.type)
             return redirect('main')
 
         else:
             messages.error(request, 'Неправильний логін або пароль!')
             return render(request, 'login.html')
-
 
     return render(request, 'login.html')
 
@@ -154,18 +152,23 @@ def settings_post(request):
             user.password = new_password
         else:
             messages.error(request, 'Старий пароль неправильний!')
-            return render(request, 'settings.html')
+            return render(request, 'settings_partial.html')
 
-    user.save()
+    try:
+        user.save()
+        update_session_data(request, user)
+        messages.success(request, 'Зміни успішно збережено!')
+    except Exception as e:
+        messages.error(request, f'Сталася помилка під час збереження: {str(e)}')
 
-    update_session_data(request, user)
-    messages.success(request, 'Зміни успішно збережено!')
 
 def update_session_data(request, user):
+    request.session['user_id'] = user.id
     request.session['user_last_name'] = user.last_name
     request.session['user_first_name'] = user.first_name
     request.session['user_father_name'] = user.father_name
     request.session['user_login'] = user.login
+    request.session['user_type'] = user.type
     request.session['user_full_name'] = f"{user.last_name} {user.first_name} {user.father_name}"
 
 
@@ -197,6 +200,6 @@ def requests_view(request):
     return HttpResponse('Unauthorized', status=401)
 
 
-def logout_view(reauest):
+def logout_view(request):
     request.session.flush()
     return redirect('home')
