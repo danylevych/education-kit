@@ -32,14 +32,10 @@ def login_view(request):
     if request.method == 'POST':
         login = request.POST['login']
         password = request.POST['password']
-        print(login, password)
 
         user = User.objects.filter(login=login).first()
-        print(user.password)
         if user and user.password == password:
             update_session_data(request, user)
-            print ('we are here')
-            print(user.type)
             return redirect('main')
 
         else:
@@ -57,21 +53,25 @@ def register_view(request):
         login = request.POST['login']
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
-        class_id = request.POST['class_id']
+        class_id = request.POST.get('class_id')
 
         if password != confirm_password:
             return render(request, 'register.html', {'classes': Class.objects.all(), 'error': 'Паролі не співпадають'})
 
-        hashed_password = password
+        try:
+            class_instance = Class.objects.get(id=class_id)  # Отримайте об'єкт Class
+        except Class.DoesNotExist:
+            return render(request, 'register.html', {'classes': Class.objects.all(), 'error': 'Вказаний клас не існує'})
 
         request_obj = Request(
             first_name=first_name,
             last_name=last_name,
             father_name=father_name,
             login=login,
-            class_id=class_id,
-            password=hashed_password
+            class_id=class_instance,
+            password=password
         )
+
         request_obj.save()
 
         return redirect('home')
@@ -92,7 +92,6 @@ def student_lessons(request):
         student = Student.objects.get(user=user)
         subjects = Subject.objects.filter(teachersclassessubject__class_id=student.class_id)
         lessons_data = [{"name": subject.name, "description": subject.description or "", "id": subject.id} for subject in subjects]
-        print(lessons_data)
         return JsonResponse({"lessons": lessons_data})
 
     return JsonResponse({"error": "Unauthorized"}, status=401)
@@ -121,7 +120,6 @@ def get_student_teachers(request):
 
 def settings_partial(request):
     if request.method == 'POST':
-        print('We got POST request')
         settings_post(request)
         return redirect('main')
 
@@ -182,7 +180,7 @@ def lesson_detail(request, id):
 
 
 @custom_login_required
-def requests_view(request):
+def requests_partial(request):
     user = User.objects.get(id=request.session['user_id'])
 
     if user.type == 'teacher':
@@ -190,12 +188,12 @@ def requests_view(request):
             teacher = Teacher.objects.get(user=user)
             class_obj = Class.objects.get(supervisor=teacher)
             requests = Request.objects.filter(class_id=class_obj.id)
+            return render(request, 'requests_partial.html', {'requests':requests})
+
         except Teacher.DoesNotExist:
             return HttpResponse('Teacher not found', status=404)
         except Class.DoesNotExist:
             return HttpResponse('Class not found', status=404)
-
-        return render(request, 'requests.html', {'requests': requests})
 
     return HttpResponse('Unauthorized', status=401)
 
@@ -203,3 +201,34 @@ def requests_view(request):
 def logout_view(request):
     request.session.flush()
     return redirect('home')
+
+
+def approve_request(request, request_id):
+    if request.method == 'POST':
+        request_obj = Request.objects.get(id=request_id)
+        user = User(
+            first_name=request_obj.first_name,
+            last_name=request_obj.last_name,
+            father_name=request_obj.father_name,
+            login=request_obj.login,
+            password=request_obj.password,
+            type='student'
+        )
+        user.save()
+
+        student = Student(user=user, class_id=request_obj.class_id)
+        student.save()
+        request_obj.delete()
+
+        return JsonResponse({'success': True})
+
+    return JsonResponse({'success': False})
+
+def reject_request(request, request_id):
+    if request.method == 'POST':
+        request_obj = Request.objects.get(id=request_id)
+        request_obj.delete()
+
+        return JsonResponse({'success': True})
+
+    return JsonResponse({'success': False})
