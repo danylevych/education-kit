@@ -39,14 +39,10 @@ def login_view(request):
 
         user = User.objects.filter(login=login).first()
 
-        print(password)
-        print(user.password)
         if user and user.password == password:
-            request.session['user_id'] = user.id
-            if user.type == User.STUDENT:
-                return redirect('main', {'user_type': 'student'})
-            else:
-                return redirect('main', {'user_type': 'teacher'})
+            update_session_data(request, user)
+            return redirect('main')
+
         else:
             messages.error(request, 'Неправильний логін або пароль!')
             return render(request, 'login.html')
@@ -68,7 +64,7 @@ def register_view(request):
         if password != confirm_password:
             return render(request, 'register.html', {'classes': Class.objects.all(), 'error': 'Паролі не співпадають'})
 
-        hashed_password = make_password(password)
+        hashed_password = password
 
         request_obj = Request(
             first_name=first_name,
@@ -125,10 +121,52 @@ def get_student_teachers(request):
     return JsonResponse({'teachers': teachers_list})
 
 
-@custom_login_required
-def settings(request):
-    return render(request, 'settings.html')
+def settings_partial(request):
+    if request.method == 'POST':
+        print('We got POST request')
+        settings_post(request)
+        return redirect('main')
 
+    return render(request, 'settings_partial.html')
+
+
+def settings_post(request):
+    user = User.objects.get(id=request.session['user_id'])
+
+    surname = request.POST.get('surname')
+    name = request.POST.get('name')
+    patronymic = request.POST.get('patronymic')
+    login = request.POST.get('login')
+    old_password = request.POST.get('old_password')
+    new_password = request.POST.get('new_password')
+
+    if surname and surname != user.last_name:
+        user.last_name = surname
+    if name and name != user.first_name:
+        user.first_name = name
+    if patronymic and patronymic != user.father_name:
+        user.father_name = patronymic
+    if login and login != user.login:
+        user.login = login
+
+    if old_password and new_password:
+        if old_password == user.password:
+            user.password = new_password
+        else:
+            messages.error(request, 'Старий пароль неправильний!')
+            return render(request, 'settings.html')
+
+    user.save()
+
+    update_session_data(request, user)
+    messages.success(request, 'Зміни успішно збережено!')
+
+def update_session_data(request, user):
+    request.session['user_last_name'] = user.last_name
+    request.session['user_first_name'] = user.first_name
+    request.session['user_father_name'] = user.father_name
+    request.session['user_login'] = user.login
+    request.session['user_full_name'] = f"{user.last_name} {user.first_name} {user.father_name}"
 
 
 @custom_login_required
@@ -160,5 +198,5 @@ def requests_view(request):
 
 
 def logout_view(reauest):
-    del reauest.session['user_id']
+    request.session.flush()
     return redirect('home')
