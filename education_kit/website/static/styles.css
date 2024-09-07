@@ -128,8 +128,12 @@ a {
 }
 
 .option {
-    color: rgb(186, 178, 178);
+    color: #000; /* Темний текст для опцій */
     background-color:  rgba(255, 255, 255, 0.1);
+}
+
+.input-field option {
+    color: #000; /* Темний текст для опцій */
 }
 
 
@@ -169,8 +173,26 @@ a {
     transition: background-color 0.3s;
 }
 
+.main-icon {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: white;
+    font-size: 1rem; /* Розмір іконки */
+    text-decoration: none;
+    background-color: rgba(255, 255, 255, 0.15); /* Напівпрозорий фон */
+    padding: 10px;
+    border-radius: 50%; /* Кругла форма кнопки */
+    transition: background-color 0.3s;
+}
+
 .home-icon:hover {
     background-color: rgba(255, 255, 255, 0.3); /* Зміна фону при наведенні */
+}
+
+.icon-door i {
+    font-size: 1rem; /* Adjust size as needed */
+    color: #fff; /* Adjust color as needed */
 }
 
 .home-icon i {
@@ -322,7 +344,7 @@ body {
 
 /* Стиль для кожного уроку */
 .lesson {
-    background-color: #3333338a; /* Темний фон */
+    background-color:rgba(255, 255, 255, 0.15); /* Темний фон */
     border: 1px solid #ffffff; /* Темніша обводка */
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Тінь трохи темніша */
@@ -569,7 +591,8 @@ label {
 }
 
 .icon-check,
-.icon-cross {
+.icon-cross,
+.icon-door {
     font-size: 1.5rem;
     color: #fff;
     margin-left: 20px;
@@ -577,12 +600,17 @@ label {
 }
 
 .icon-check:hover {
-    color: #0f0; /* Зелений для галочки */
+    color: #0f0; /* Green for check icon */
 }
 
 .icon-cross:hover {
-    color: #f00; /* Червоний для хрестика */
+    color: #f00; /* Red for cross icon */
 }
+
+.icon-door:hover {
+    color: #0f0; /* Green for door icon */
+}
+
 
 /* Стилі для заголовка списку заяв */
 .requests-heading {
@@ -605,6 +633,15 @@ label {
     margin-bottom: 10px;
 }
 
+.no-meet-message {
+    display: none; /* Сховати повідомлення за замовчуванням */
+    text-align: center;
+    color: #fff; /* Колір тексту */
+    font-size: 1.2rem; /* Розмір шрифту */
+    margin-top: 10px; /* Відстань між контейнером запитів і повідомленням */
+    margin-bottom: 10px;
+}
+
 .no-requests-message p {
     margin: 0; /* Видалити відступи для параграфа */
 }
@@ -614,4 +651,124 @@ label {
     display: block; /* Показати повідомлення */
 }
 
+.teacher-subject-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 45px;
+    padding: 20px;
+    border: 2px solid #fff;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+
+    margin: 0 auto;
+    box-sizing: border-box;
+    width: 80%;
+    max-width: 80%;
+    margin-top: 180px;
+    padding-left: 100px;
+    max-height: calc(100vh - 300px); /* Віднімемо достатньо місця для заголовка та інших елементів */
+    overflow-y: auto;
+    overflow-x: hidden;
+
+}
+
+/* Стиль для кожного уроку */
+.teacher-subject {
+    background-color: rgba(255, 255, 255, 0.15); /* Темний фон */
+    border: 1px solid #ffffff; /* Темніша обводка */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Тінь трохи темніша */
+    
+    /* Вужчі та вищі контейнери */
+    max-width: 300px; /* Зменшено максимальну ширину */
+    min-height: 150px; /* Встановлено мінімальну висоту */
+    width: 80%;
+    padding: 20px;
+    text-align: center;
+    color: white; /* Білий текст */
+    
+    /* Flex для вирівнювання кнопки вниз */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Це розташує контент зверху, а кнопку знизу */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* Додавання тіні при наведенні */
+.teacher-subject:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3); /* Тінь ще темніша */
+}
+
+/* Стиль для назви уроку */
+.teacher-subject h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+/* Стиль для опису уроку */
+.teacher-subject p {
+    font-size: 1em;
+    color: #ddd; /* Трохи світліший текст для опису */
+}
+
+/* Стиль для кнопки */
+.btn-create {
+    padding: 10px 20px; /* Відступи */
+    width: auto;
+    height: auto;
+    font-size: 0.7rem; /* Розмір шрифту */
+    color: #fff;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.3s, box-shadow 0.3s;
+    margin-top: auto; /* Це забезпечить кнопку у нижній частині */
+
+}
+
+.btn-create:hover {
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.create-form-container {
+    position: absolute;
+    top: 45%; /* Center vertically */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 400px; /* Increase the width of the container */
+}
+
+.create-input-field {
+    display: block;
+    width: 100%; /* Make the input fields take the full width of the container */
+    max-width: 300px; /* Set a maximum width if needed */
+    height: 40px; /* Height of input fields */
+    margin: 30px auto; /* Center horizontally with auto margins */
+    padding: 0 20px; /* Internal padding */
+    border: 2px solid #fff; /* White border */
+    border-radius: 8px; /* Rounded corners */
+    background: rgba(255, 255, 255, 0); /* Transparent background */
+    color: #fff; /* Text color */
+    font-size: 1rem; /* Font size */
+    outline: none; /* Remove outline on focus */
+    box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.3); /* Inner shadow */
+}
+
+
+.form-title {
+    color: white;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    text-align: center;
+    width: 100%; /* Make it take the full width of the container */
+    box-sizing: border-box; /* Include padding and border in the width */
+}
 

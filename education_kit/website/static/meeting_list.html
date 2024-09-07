@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="header">
@@ -15,62 +16,56 @@
 
     <h1 class="title" style="top: 10%">EDUCATION KIT</h1>
 
+    <!-- Меню для студента -->
     <nav class="navbar">
-        <a id="lessons-btn">Уроки</a>
+        <a id="lessons-btn">Створити конференцію</a>
+        <a href="meeting_list.html">Конференції</a>
         <a id="requests-btn">Запити</a>
         <a href="settings.html">Налаштування</a>
         <a>Вийти</a>
     </nav>
     <div class="requests-container">
         <div class="requests-heading">
-            <h2>Список запитів</h2>
+            <h2>Список конференцій</h2>
         </div>
         <div class="request-card">
             <div class="request-info">
-                <span>Данилевич Олег Іванович </span>
+                <span>Конференція з предмету —  </span>
                 <span>10-А </span>
                 <span>12:00</span>
             </div>
             <div class="request-actions">
-                <span class="icon-check">&#10003;</span>
+                <span class="icon-door"><i class="fas fa-door-open"></i></span>
                 <span class="icon-cross">&#10007;</span>
             </div>
         </div>
         <div class="request-card">
             <div class="request-info">
-                <span>Данилевич Олег Іванович </span>
+                <span>Конференція з предмету —  </span>
                 <span>10-А </span>
                 <span>12:00</span>
             </div>
             <div class="request-actions">
-                <span class="icon-check">&#10003;</span>
+                <span class="icon-door"><i class="fas fa-door-open"></i></span>
                 <span class="icon-cross">&#10007;</span>
             </div>
         </div>
         <div class="request-card">
             <div class="request-info">
-                <span>Данилевич Олег Іванович </span>
+                <span>Конференція з предмету —  </span>
                 <span>10-А </span>
                 <span>12:00</span>
             </div>
             <div class="request-actions">
-                <span class="icon-check">&#10003;</span>
+                <span class="icon-door"><i class="fas fa-door-open"></i></span>
                 <span class="icon-cross">&#10007;</span>
             </div>
         </div>
-        <div class="no-requests-message">
-            <p>Заявки відсутні</p>
+        <div class="no-meet-message"></div>
+            <p>Конференції відсутні</p>
         </div>
-    </div>
-<<<<<<< HEAD
-=======
-
-
-
-
-
->>>>>>> 1282ba4f809bea1e27dfa6792215fd1bed8b174b
     <div id="area"> </div>
+
     <script src="script.js"></script>
 </body>
 </html>

@@ -233,13 +233,41 @@ function updateClock() {
 setInterval(updateClock, 1000); // Оновлювати годинник кожну секунду
 updateClock(); // Оновлюємо годинник відразу при завантаженні сторінки
 
-document.addEventListener('DOMContentLoaded', function() {
-    const requestsContainer = document.querySelector('.requests-container');
-    const noRequestsMessage = document.querySelector('.no-requests-message');
-    
-    if (requestsContainer.children.length === 0) {
-        noRequestsMessage.classList.add('show');
+
+function handleAction(element) {
+    const action = element.getAttribute('data-action');
+    const requestId = element.getAttribute('data-id');
+
+    fetch(`/${action}_request/${requestId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+            'Content-Type': 'application/json'
+        },
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Оновити інтерфейс після схвалення або відхилення
+                element.closest('.request-card').remove();
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
     }
+<<<<<<< HEAD
 });
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -257,3 +285,7 @@ document.addEventListener('DOMContentLoaded', function() {
         noMeetMessage.classList.add('show');
     }
 });
+=======
+    return cookieValue;
+}
+>>>>>>> 8d009df89ad65ae2915294ec77580cccf487c836

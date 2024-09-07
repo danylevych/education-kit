@@ -2,40 +2,22 @@
     <div class="requests-heading">
         <h2>Список запитів</h2>
     </div>
-    <div class="request-card">
-        <div class="request-info">
-            <span>Данилевич Олег Іванович </span>
-            <span>10-А </span>
-            <span>12:00</span>
-        </div>
-        <div class="request-actions">
-            <span class="icon-check">&#10003;</span>
-            <span class="icon-cross">&#10007;</span>
-        </div>
-    </div>
-    <div class="request-card">
-        <div class="request-info">
-            <span>Данилевич Олег Іванович </span>
-            <span>10-А </span>
-            <span>12:00</span>
-        </div>
-        <div class="request-actions">
-            <span class="icon-check">&#10003;</span>
-            <span class="icon-cross">&#10007;</span>
-        </div>
-    </div>
-    <div class="request-card">
-        <div class="request-info">
-            <span>Данилевич Олег Іванович </span>
-            <span>10-А </span>
-            <span>12:00</span>
-        </div>
-        <div class="request-actions">
-            <span class="icon-check">&#10003;</span>
-            <span class="icon-cross">&#10007;</span>
-        </div>
-    </div>
-    <div class="no-requests-message">
-        <p>Заявки відсутні</p>
-    </div>
+        {% if requests %}
+            {% for request_obj in requests %}
+            <div class="request-card">
+                <div class="request-info">
+                    <span>{{ request_obj.last_name }} {{ request_obj.first_name }} {{ request_obj.father_name }}</span>
+                    <span>{{ request_obj.class_id.name }}</span>
+                </div>
+                <div class="request-actions">
+                    <span class="icon-check" data-action="approve" data-id="{{ request_obj.id }}" onclick="handleAction(this)">&#10003;</span>
+                    <span class="icon-cross" data-action="reject" data-id="{{ request_obj.id }}" onclick="handleAction(this)">&#10007;</span>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-requests-message show">
+                <p>Заявки відсутні</p>
+            </div>
+        {% endif %}
 </div>

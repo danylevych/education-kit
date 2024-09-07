@@ -51,7 +51,7 @@
         <!-- Меню для вчителя -->
         <nav class="navbar">
             <a href="">Створити конференцію</a>
-            <a href="">Запити</a>
+            <a id="requests-btn">Запити</a>
             <a id="settings-btn" href="#">Налаштування</a>
             <a href="{% url 'logout' %}">Вийти</a>
         </nav>
@@ -148,8 +148,8 @@
             });
     }
 
-    function loadSettings() {
-        fetch('/settings_partial/')
+    function loadRequests() {
+        fetch('/requests_partial/')
             .then(response => response.text())
             .then(html => {
                 let contentArea = document.getElementById('area');
@@ -169,9 +169,9 @@
     document.getElementById('lessons-btn')?.addEventListener('click', loadLessons);
     document.getElementById('teachers-btn')?.addEventListener('click', loadTeachers);
     document.getElementById('settings-btn')?.addEventListener('click', loadSettings);
+    document.getElementById('requests-btn')?.addEventListener('click', loadRequests);
 });
-
-
     </script>
+
 </body>
 </html>
