@@ -267,8 +267,8 @@ function getCookie(name) {
             }
         }
     }
-<<<<<<< HEAD
-});
+    return cookieValue;
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     const requestsContainer = document.querySelector('.requests-container');
@@ -285,7 +285,3 @@ document.addEventListener('DOMContentLoaded', function() {
         noMeetMessage.classList.add('show');
     }
 });
-=======
-    return cookieValue;
-}
->>>>>>> 8d009df89ad65ae2915294ec77580cccf487c836
