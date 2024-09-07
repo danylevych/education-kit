@@ -202,25 +202,6 @@ function showAlert(message, where, type = 'warning') {
     }, 3000);
 }
 
-//HOME PAGE
-
-document.addEventListener("DOMContentLoaded", function () {
-    const role = getRoleFromURL();
-
-    if (role === 'student') {
-        document.getElementById('student-content').style.display = 'block';
-    } else if (role === 'teacher') {
-        document.getElementById('teacher-content').style.display = 'block';
-    } else {
-        showAlert('Роль не вказана або неправильна.', 'alert-placeholder', 'error');
-    }
-});
-
-// Функція для отримання параметра "role" з URL
-function getRoleFromURL() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('role'); // Повертає "student" або "teacher"
-}
 
 document.addEventListener('DOMContentLoaded', function () {
     // Функція для автоматичного зникнення сповіщення

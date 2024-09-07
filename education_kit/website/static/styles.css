@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-body, html {
+html {
     height: 100%;
     margin: 0;
     display: flex;
@@ -240,27 +240,183 @@ canvas {
     border-radius: 8px;
 }
 
-/* Додатковий стиль для форми, якщо потрібно */
-form {
-    width: 100%;
-    background: rgba(255, 255, 255, 0); /* Прозорий фон */
-    border: 2px solid #fff; /* Біла обводка */
-    padding: 20px;
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 10px;
     border-radius: 8px;
 }
 
 .navbar a {
-    color: #fff;
+    color: white;
     text-decoration: none;
-    padding: 10px 15px;
-    border-radius: 8px;
-    transition: background 0.3s, box-shadow 0.3s;
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    transition: background-color 0.3s;
 }
 
 .navbar a:hover {
-    background: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+}
+
+body {
+    height: 80%;
+    width: 100%;
+}
+
+
+.lessons-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 45px;
+    padding: 20px;
+    border: 2px solid #fff;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+
+    margin: 0 auto;
+    box-sizing: border-box;
+    width: 80%;
+    max-width: 80%;
+    margin-top: 180px;
+    padding-left: 100px;
+    /* Додаємо обмеження за висотою */
+    max-height: 75%; /* Можна змінювати це значення */
+
+    /* Додаємо скролінг */
+    overflow-y: auto; /* Вертикальний скролінг */
+    overflow-x: hidden; /* Забороняємо горизонтальний скролінг */
+}
+
+/* Стиль для кожного уроку */
+.lesson {
+    background-color: #3333338a; /* Темний фон */
+    border: 1px solid #ffffff; /* Темніша обводка */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Тінь трохи темніша */
+    max-width: 300px; /* Встановлює максимальну ширину для кожного уроку */
+    width: 100%; /* Ширина 100% для забезпечення заповнення контейнера */
+    padding: 20px;
+    text-align: center;
+    color: white; /* Білий текст */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* Додавання тіні при наведенні */
+.lesson:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3); /* Тінь ще темніша */
+}
+
+/* Стиль для назви уроку */
+.lesson h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+/* Стиль для опису уроку */
+.lesson p {
+    font-size: 1em;
+    color: #ddd; /* Трохи світліший текст для опису */
 }
 
 
 
+/* Стиль для фотографії уроку */
+.lesson img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    max-height: 200px;
+    object-fit: cover;
+    filter: brightness(80%); /* Зменшити яскравість зображення для кращого контрасту */
+}
+
+/* Стиль для кнопки "Детальніше" */
+.lesson a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #0056b3; /* Темний фон кнопки */
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.lesson a:hover {
+    background-color: #004494; /* Темніший відтінок при наведенні */
+}
+
+
+
+
+
+
+/* Контейнер для вчителів */
+.teachers-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 45px;
+    padding: 20px;
+    border: 2px solid #fff;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin: 0 auto;
+    box-sizing: border-box;
+    width: 80%;
+    max-width: 80%;
+    margin-top: 180px;
+    padding-left: 100px;
+    max-height: 75%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Стиль для кожного вчителя */
+.teacher {
+    background-color: #3a3a3a9b; /* Трохи темніший фон для вчителів */
+    border: 1px solid #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    max-width: 300px;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    color: white;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* Ефект при наведенні на картку вчителя */
+.teacher:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Стиль для фото вчителя */
+.teacher img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    max-height: 200px;
+    object-fit: cover;
+    filter: brightness(80%);
+}
+
+/* Стиль для імені вчителя */
+.teacher h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+/* Стиль для предмету вчителя */
+.teacher p {
+    font-size: 1em;
+    color: #ddd;
+}

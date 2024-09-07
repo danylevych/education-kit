@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+
+    <h1 class="title" style="top: 10%">EDUCATION KIT</h1>
+
+    <!-- Меню для студента -->
+    {% if user_type == 'student' %}
+    <nav class="navbar">
+        <a id="lessons-btn">Уроки</a>
+        <a id="teachers-btn">Учителі</a>
+        <a>Налаштування</a>
+        <a>Вийти</a>
+    </nav>
+    {% endif %}
+
+    <div id="area">
+    </div>
+
+    <script src="{% static 'script.js' %}"></script>
+    <script>
+
+
+    // MAIN STUDENT
+    document.addEventListener("DOMContentLoaded", function () {
+        // Обробник для кнопки "Уроки"
+            document.getElementById('lessons-btn').addEventListener('click', function () {
+            fetch('/lessons/')
+                .then(response => response.json())
+                .then(data => {
+                    let contentArea = document.getElementById('area');
+                    contentArea.innerHTML = ''; // Очищуємо попередній контент
+                    if (data.lessons) {
+                        let lessonsContainerDiv = document.createElement('div');
+                        lessonsContainerDiv.className = 'lessons-container';
+
+                        data.lessons.forEach(lesson => {
+                            // Виправлено: Використовуємо document.createElement
+                            let lessonDiv = document.createElement('div');
+
+                            lessonDiv.className = 'lesson';
+
+                            // Додаємо HTML-код уроку
+                            lessonDiv.innerHTML = `
+                                <h3>${lesson.name}</h3>
+                                <p>${lesson.description}</p>
+                                <a href="#">Learn More</a>
+                                `;
+
+                                lessonDiv.addEventListener('click', function () {
+                                    // window.location.href = `/lesson/${lesson.id}/`; // Перехід на сторінку уроку
+                                });
+
+                                lessonsContainerDiv.appendChild(lessonDiv); // Додаємо урок у контейнер
+                            });
+
+                            contentArea.appendChild(lessonsContainerDiv); // Додаємо контейнер у область контенту
+                        }
+                    });
+            });
+        });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Обробник для кнопки "Учителі"
+    document.getElementById('teachers-btn').addEventListener('click', function () {
+        fetch('/get_student_teachers/')
+            .then(response => response.json())
+            .then(data => {
+                let contentArea = document.getElementById('area');
+                contentArea.innerHTML = ''; // Очищуємо попередній контент
+
+                if (data.teachers) {
+                    let teachersContainerDiv = document.createElement('div');
+                    teachersContainerDiv.className = 'teachers-container';
+
+                    data.teachers.forEach(teacher => {
+                        let teacherDiv = document.createElement('div');
+                        teacherDiv.className = 'teacher';
+
+                        // Створюємо картку вчителя з фото та ім'ям
+                        teacherDiv.innerHTML = `
+                            <img src="data:image/png;base64,${teacher.photo}" alt="Teacher Photo" class="teacher-photo" style="width:100px;height:100px;" />
+                            <h3>${teacher.name}</h3>
+                        `;
+
+                        teachersContainerDiv.appendChild(teacherDiv); // Додаємо картку вчителя у контейнер
+                    });
+
+                    contentArea.appendChild(teachersContainerDiv); // Додаємо контейнер у область контенту
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching teachers:', error);
+            });
+    });
+});
+
+    </script>
+</body>
+</html>
