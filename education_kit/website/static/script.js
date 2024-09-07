@@ -241,3 +241,19 @@ document.addEventListener('DOMContentLoaded', function() {
         noRequestsMessage.classList.add('show');
     }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const requestsContainer = document.querySelector('.requests-container');
+    const noRequestsMessage = document.querySelector('.no-requests-message');
+    
+    if (requestsContainer.children.length === 0) {
+        noRequestsMessage.classList.add('show');
+    }
+
+    const meetingsContainer = document.querySelector('.meetings-container');
+    const noMeetMessage = document.querySelector('.no-meet-message');
+
+    if (meetingsContainer.children.length === 0) {
+        noMeetMessage.classList.add('show');
+    }
+});
