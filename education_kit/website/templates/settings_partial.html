@@ -1,0 +1,26 @@
+<div class="settings-container">
+    <form id="settings-form" method="POST" action="{% url 'settings_partial' %}">
+        {% csrf_token %}
+        <div class="form-row">
+            <label for="surname">Прізвище:</label>
+            <input type="text" name="surname" id="surname" class="input-settings-field" placeholder="Введіть прізвище" value="{{ request.session.user_last_name }}">
+            <label for="name">Ім'я:</label>
+            <input type="text" name="name" id="name" class="input-settings-field" placeholder="Введіть ім'я" value="{{ request.session.user_first_name }}">
+            <label for="patronymic">По батькові:</label>
+            <input type="text" name="patronymic" id="patronymic" class="input-settings-field" placeholder="Введіть по батькові" value="{{ request.session.user_father_name }}">
+        </div>
+
+        <div class="form-row">
+            <label for="login">Логін:</label>
+            <input type="text" name="login" id="login" class="input-settings-field" placeholder="Введіть логін" value="{{ request.session.user_login }}">
+            <label for="old-password">Старий пароль:</label>
+            <input type="password" name="old_password" id="old-password" class="input-settings-field" placeholder="Введіть старий пароль">
+            <label for="new-password">Новий пароль:</label>
+            <input type="password" name="new_password" id="new-password" class="input-settings-field" placeholder="Введіть новий пароль">
+        </div>
+
+        <div class="button-container">
+            <button type="submit" class="btn-settings-submit">Зберегти зміни</button>
+        </div>
+    </form>
+</div>

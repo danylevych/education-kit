@@ -8,35 +8,39 @@
     <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
+    <div class="header">
+        <div class="user-info">{{ request.session.user_full_name }}</div>
+        <div class="clock">12:00</div>
+    </div>
+
     <canvas id="canvas"></canvas>
 
     <h1 class="title" style="top: 10%">EDUCATION KIT</h1>
 
     <!-- Меню для студента -->
-    {% if user_type == 'student' %}
+    {% if request.session.user_type == 'student' %}
         <nav class="navbar">
             <a id="lessons-btn">Уроки</a>
             <a id="teachers-btn">Учителі</a>
-            <a href="{% url 'settings' %}">Налаштування</a>
+            <a id="settings-btn">Налаштування</a>
             <a href="{% url 'logout' %}">Вийти</a>
         </nav>
-    {% else if user_type == 'teacher' %}
+    {% elif request.session.user_type == 'teacher' %}
         <!-- Меню для вчителя -->
         <nav class="navbar">
             <a href="{% url 'create_lesson' %}">Створити конференцію</a>
             <a href="{% url 'requests' %}">Запити</a>
-            <a href="{% url 'settings' %}">Налаштування</a>
+            <a id="settings-btn">Налаштування</a>
             <a href="{% url 'logout' %}">Вийти</a>
         </nav>
     {% endif %}
 
 
-
     <div id="area"> </div>
+
 
     <script src="{% static 'script.js' %}"></script>
     <script>
-
 
     // MAIN STUDENT
     document.getElementById('lessons-btn').addEventListener('click', function () {
@@ -114,6 +118,18 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     });
 });
+
+document.getElementById('settings-btn').addEventListener('click', function () {
+            fetch('/settings_partial/')
+                .then(response => response.text())
+                .then(html => {
+                    let contentArea = document.getElementById('area');
+                    contentArea.innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('Error fetching settings:', error);
+                });
+        });
 
     </script>
 </body>
