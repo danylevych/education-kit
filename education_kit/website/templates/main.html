@@ -14,13 +14,23 @@
 
     <!-- Меню для студента -->
     {% if user_type == 'student' %}
-    <nav class="navbar">
-        <a id="lessons-btn">Уроки</a>
-        <a id="teachers-btn">Учителі</a>
-        <a href="{% url 'settings' %}">Налаштування</a>
-        <a>Вийти</a>
-    </nav>
+        <nav class="navbar">
+            <a id="lessons-btn">Уроки</a>
+            <a id="teachers-btn">Учителі</a>
+            <a href="{% url 'settings' %}">Налаштування</a>
+            <a href="{% url 'logout' %}">Вийти</a>
+        </nav>
+    {% else if user_type == 'teacher' %}
+        <!-- Меню для вчителя -->
+        <nav class="navbar">
+            <a href="{% url 'create_lesson' %}">Створити конференцію</a>
+            <a href="{% url 'requests' %}">Запити</a>
+            <a href="{% url 'settings' %}">Налаштування</a>
+            <a href="{% url 'logout' %}">Вийти</a>
+        </nav>
     {% endif %}
+
+
 
     <div id="area"> </div>
 
@@ -89,6 +99,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         teacherDiv.innerHTML = `
                             <img src="data:image/png;base64,${teacher.photo}" alt="Teacher Photo" class="teacher-photo" style="width:100px;height:100px;" />
                             <h3>${teacher.name}</h3>
+                            <p style='font-weight: bold; margin-bottom: 5px;'>${teacher.email}<p>
+                            <p style='font-weight: bold;'>${teacher.phone}<p>
                         `;
 
                         teachersContainerDiv.appendChild(teacherDiv); // Додаємо картку вчителя у контейнер

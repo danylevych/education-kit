@@ -28,6 +28,7 @@ class User(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
+
 class Teacher(models.Model):
     phone = models.CharField(max_length=20)
     email = models.EmailField(max_length=255)
@@ -36,6 +37,7 @@ class Teacher(models.Model):
     def __str__(self):
         return self.user.first_name
 
+
 class Class(models.Model):
     name = models.CharField(max_length=35)
     supervisor = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True, blank=True)
@@ -43,12 +45,14 @@ class Class(models.Model):
     def __str__(self):
         return self.name
 
+
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     class_id = models.ForeignKey(Class, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.user.first_name
+
 
 class Subject(models.Model):
     name = models.CharField(max_length=120)
@@ -58,6 +62,7 @@ class Subject(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Request(models.Model):
     first_name = models.CharField(max_length=255)
@@ -77,6 +82,7 @@ class Request(models.Model):
     def __str__(self):
         return self.login
 
+
 class Meeting(models.Model):
     reference = models.CharField(max_length=255)
     description = models.CharField(max_length=255, blank=True, null=True)
@@ -85,6 +91,7 @@ class Meeting(models.Model):
 
     def __str__(self):
         return self.reference
+
 
 class TeachersClassesSubject(models.Model):
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
