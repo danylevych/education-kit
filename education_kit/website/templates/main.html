@@ -17,56 +17,55 @@
     <nav class="navbar">
         <a id="lessons-btn">Уроки</a>
         <a id="teachers-btn">Учителі</a>
-        <a>Налаштування</a>
+        <a href="{% url 'settings' %}">Налаштування</a>
         <a>Вийти</a>
     </nav>
     {% endif %}
 
-    <div id="area">
-    </div>
+    <div id="area"> </div>
 
     <script src="{% static 'script.js' %}"></script>
     <script>
 
 
     // MAIN STUDENT
-    document.addEventListener("DOMContentLoaded", function () {
-        // Обробник для кнопки "Уроки"
-            document.getElementById('lessons-btn').addEventListener('click', function () {
-            fetch('/lessons/')
-                .then(response => response.json())
-                .then(data => {
-                    let contentArea = document.getElementById('area');
-                    contentArea.innerHTML = ''; // Очищуємо попередній контент
-                    if (data.lessons) {
-                        let lessonsContainerDiv = document.createElement('div');
-                        lessonsContainerDiv.className = 'lessons-container';
+    document.getElementById('lessons-btn').addEventListener('click', function () {
+    fetch('/lessons/')
+        .then(response => response.json())
+        .then(data => {
+            let contentArea = document.getElementById('area');
+            contentArea.innerHTML = '';
+            if (data.lessons) {
+                let lessonsContainerDiv = document.createElement('div');
+                lessonsContainerDiv.className = 'lessons-container';
 
-                        data.lessons.forEach(lesson => {
-                            // Виправлено: Використовуємо document.createElement
-                            let lessonDiv = document.createElement('div');
+                data.lessons.forEach(lesson => {
+                    let lessonDiv = document.createElement('div');
+                    lessonDiv.className = 'lesson';
+                    lessonDiv.innerHTML = `
+                        <a href="#" class="learn-more-place-holder" data-id="${lesson.id}" style="text-decoration: none; color: inherit;">
+                            <h3>${lesson.name}</h3>
+                            <p>${lesson.description}</p>
+                        </a>
+                    `;
 
-                            lessonDiv.className = 'lesson';
+                    lessonsContainerDiv.appendChild(lessonDiv);
+                });
 
-                            // Додаємо HTML-код уроку
-                            lessonDiv.innerHTML = `
-                                <h3>${lesson.name}</h3>
-                                <p>${lesson.description}</p>
-                                <a href="#">Learn More</a>
-                                `;
+                contentArea.appendChild(lessonsContainerDiv);
 
-                                lessonDiv.addEventListener('click', function () {
-                                    // window.location.href = `/lesson/${lesson.id}/`; // Перехід на сторінку уроку
-                                });
-
-                                lessonsContainerDiv.appendChild(lessonDiv); // Додаємо урок у контейнер
-                            });
-
-                            contentArea.appendChild(lessonsContainerDiv); // Додаємо контейнер у область контенту
-                        }
+                // Додаємо обробник подій після того, як HTML-код вставлено в DOM
+                document.querySelectorAll('.learn-more-place-holder').forEach(button => {
+                    button.addEventListener('click', function (event) {
+                        event.preventDefault(); // Запобігти стандартному переходу за посиланням
+                        const lessonId = this.getAttribute('data-id');
+                        window.location.href = `/lesson/${lessonId}/`; // Перехід на сторінку уроку
                     });
-            });
+                });
+            }
         });
+});
+
 
 
 document.addEventListener("DOMContentLoaded", function () {

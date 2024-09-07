@@ -24,6 +24,12 @@ canvas {
     z-index: -1; /* Зробити так, щоб canvas був позаду всіх інших елементів */
 }
 
+a {
+    text-decoration: none; /* Прибирає підкреслення */
+    color: inherit;        /* Опціонально: наслідує колір батьківського елемента */
+}
+
+
 .title-home {
     position: absolute;
     top: 10%; /* Опустити заголовок на 30% */
@@ -335,25 +341,6 @@ body {
     object-fit: cover;
     filter: brightness(80%); /* Зменшити яскравість зображення для кращого контрасту */
 }
-
-/* Стиль для кнопки "Детальніше" */
-.lesson a {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 10px 20px;
-    background-color: #0056b3; /* Темний фон кнопки */
-    color: white;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: background-color 0.3s;
-}
-
-.lesson a:hover {
-    background-color: #004494; /* Темніший відтінок при наведенні */
-}
-
-
-
 
 
 

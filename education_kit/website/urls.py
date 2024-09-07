@@ -10,4 +10,6 @@ urlpatterns = [
     path('main/', views.main_view, name='main'),
     path('lessons/', views.student_lessons, name='student_lessons'),
     path('get_student_teachers/', views.get_student_teachers, name='teachers'),
+    path('sttings/', views.settings, name='settings'),
+    path('lesson/<int:id>/', views.lesson_detail, name='lesson_detail'),
 ]

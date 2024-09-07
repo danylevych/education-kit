@@ -5,6 +5,11 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 from django.contrib import messages
 
+from django.http import JsonResponse
+from .models import Subject, Teacher, Student
+import base64
+from django.core.files.base import ContentFile
+
 from .models import Request, Class, User, Teacher, Student
 
 
@@ -85,16 +90,9 @@ def register_view(request):
 def main_view(request):
     return render(request, 'main.html', {'user_type' : 'student'})
 
-from django.http import JsonResponse
-from .models import Subject, Teacher, Student
-import base64
-from django.core.files.base import ContentFile
-
 @custom_login_required
 def student_lessons(request):
-    user_id = request.session['user_id']
-    user = User.objects.get(id=user_id)
-    print(user)
+    user = User.objects.get(id=request.session['user_id'])
 
     if user.type == 'student':
         student = Student.objects.get(user=user)
@@ -105,10 +103,9 @@ def student_lessons(request):
 
     return JsonResponse({"error": "Unauthorized"}, status=401)
 
-
+@custom_login_required
 def get_student_teachers(request):
-    user_id = request.session['user_id']
-    user = User.objects.get(id=user_id)
+    user = User.objects.get(id=request.session['user_id'])
     student = Student.objects.get(user=user)
 
     # Отримуємо клас учня
@@ -127,3 +124,17 @@ def get_student_teachers(request):
     ]
 
     return JsonResponse({'teachers': teachers_list})
+
+
+def settings(request):
+    return render(request, 'settings.html')
+
+
+
+@custom_login_required
+def lesson_detail(request, id):
+    subject = Subject.objects.get(id=id)
+    context = {
+        'subject': subject,
+    }
+    return render(request, 'connect_to_meeting.html', context)
