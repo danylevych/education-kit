@@ -272,7 +272,7 @@ a {
     justify-content: space-between;
     align-items: center;
     position: absolute;
-    top: 17%; /* Відстань від верхнього краю */
+    top: 16.5%; /* Відстань від верхнього краю */
     left: 10%; /* Вирівнювання по лівому краю */
     right: 10%; /* Вирівнювання по правому краю */
     padding: 0 20px;
@@ -511,6 +511,107 @@ label {
 .btn-settings-submit:hover {
     background: rgba(255, 255, 255, 0.3); /* Трохи світліший фон при наведенні */
     box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2); /* Тінь при наведенні */
+}
+
+/* Контейнер для налаштувань */
+.requests-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border: 2px solid #fff;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin: 0 auto;
+    width: 80%;
+    margin-top: 180px;
+    max-height: calc(100vh - 300px); /* Віднімемо достатньо місця для заголовка та інших елементів */
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Стиль для картки запиту */
+.request-card {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #fff;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    margin-bottom: 15px;
+    margin-top: 10px;
+}
+
+/* Стилі для інформації запиту */
+.request-info {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    font-size: 1rem;
+    flex: 1; /* Займає всю доступну ширину */
+    padding: 10px;
+    margin-right: 20px; /* Відступ для іконок справа */
+}
+
+/* Відступ між спанами */
+.request-info span {
+    margin-right: 50px; /* Відступ справа для кожного span */
+}
+
+.request-info span:last-child {
+    margin-right: 0; /* Видалення відступу у останнього span */
+}
+
+/* Стилі для іконок дій */
+.request-actions {
+    display: flex;
+    align-items: center;
+}
+
+.icon-check,
+.icon-cross {
+    font-size: 1.5rem;
+    color: #fff;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.icon-check:hover {
+    color: #0f0; /* Зелений для галочки */
+}
+
+.icon-cross:hover {
+    color: #f00; /* Червоний для хрестика */
+}
+
+/* Стилі для заголовка списку заяв */
+.requests-heading {
+    text-align: center; /* Вирівнювання заголовка по центру */
+    margin-bottom: 20px; /* Відстань між заголовком і контейнером запитів */
+}
+
+.requests-heading h2 {
+    color: #fff; /* Колір заголовка */
+    font-size: 1.5rem; /* Розмір шрифту заголовка */
+}
+
+/* Стиль для повідомлення про відсутність заявок */
+.no-requests-message {
+    display: none; /* Сховати повідомлення за замовчуванням */
+    text-align: center;
+    color: #fff; /* Колір тексту */
+    font-size: 1.2rem; /* Розмір шрифту */
+    margin-top: 10px; /* Відстань між контейнером запитів і повідомленням */
+    margin-bottom: 10px;
+}
+
+.no-requests-message p {
+    margin: 0; /* Видалити відступи для параграфа */
+}
+
+/* Показати повідомлення, якщо немає запитів */
+.no-requests-message.show {
+    display: block; /* Показати повідомлення */
 }
 
 
