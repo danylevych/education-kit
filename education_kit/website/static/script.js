@@ -232,3 +232,12 @@ function updateClock() {
 
 setInterval(updateClock, 1000); // Оновлювати годинник кожну секунду
 updateClock(); // Оновлюємо годинник відразу при завантаженні сторінки
+
+document.addEventListener('DOMContentLoaded', function() {
+    const requestsContainer = document.querySelector('.requests-container');
+    const noRequestsMessage = document.querySelector('.no-requests-message');
+    
+    if (requestsContainer.children.length === 0) {
+        noRequestsMessage.classList.add('show');
+    }
+});
