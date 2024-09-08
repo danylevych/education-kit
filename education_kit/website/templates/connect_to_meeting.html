@@ -12,7 +12,7 @@
     <div class="title-main">{{ subject.name }}</div>
     <div class="description">{{ subject.description }}</div>
     <div class="buttons">
-        <a href="" class="btn">Приєднатися</a>
+        <a href="{{ meeting.reference }}" class="btn">Приєднатися</a>
         <a href="{% url 'main' %}" class="btn">Назад</a>
     </div>
     <script src="{% static 'script.js' %}"></script>

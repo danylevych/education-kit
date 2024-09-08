@@ -13,6 +13,16 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 from .models import Request, Class, User, Teacher, Student, TeachersClassesSubject, Meeting
 
+import random
+import string
+import uuid
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
+from django.conf import settings
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
+from .models import Subject, User, Teacher, Class, Meeting
+import datetime
 
 
 
@@ -174,8 +184,10 @@ def update_session_data(request, user):
 @custom_login_required
 def lesson_detail(request, id):
     subject = Subject.objects.get(id=id)
+    metting = Meeting.objects.filter(subject=subject).last()
     context = {
         'subject': subject,
+        'meeting': metting
     }
     return render(request, 'connect_to_meeting.html', context)
 
@@ -224,6 +236,7 @@ def approve_request(request, request_id):
         return JsonResponse({'success': True})
 
     return JsonResponse({'success': False})
+
 
 def reject_request(request, request_id):
     if request.method == 'POST':
@@ -277,6 +290,21 @@ def meetings_view(request):
     return HttpResponse('Unauthorized', status=403)
 
 
+def get_google_service_credential():
+    credentials = service_account.Credentials.from_service_account_file(
+        '/home/danylevych/Downloads/education-kit-435009-cef74098c49d.json',
+        scopes=['https://www.googleapis.com/auth/calendar']
+    )
+    service = build('calendar', 'v3', credentials=credentials)
+    return service
+
+def generate_meet_id():
+    """Generate a Meet ID in the format xxx-xxxx-xxx."""
+    letters = string.ascii_lowercase
+    part1 = ''.join(random.choice(letters) for _ in range(3))
+    part2 = ''.join(random.choice(letters) for _ in range(4))
+    part3 = ''.join(random.choice(letters) for _ in range(3))
+    return f"{part1}-{part2}-{part3}"
 
 def create_meeting_view(request, id):
     subject = get_object_or_404(Subject, id=id)
@@ -294,11 +322,55 @@ def create_meeting_view(request, id):
         if meeting_name and class_id:
             class_obj = get_object_or_404(Class, id=class_id)
 
-            meeting = Meeting(subject=subject, description=meeting_name, class_obj=class_obj)
-            meeting.save()
+            service = get_google_service_credential()
 
-            return redirect('main')
+            meetURL = generate_meet_id()   # Generate a unique meeting URL
 
+            event = {
+                'summary': meeting_name,
+                'description': 'Meeting for subject: ' + subject.name,
+                'start': {
+                    'dateTime': (datetime.datetime.now() + datetime.timedelta(minutes=3)).isoformat(),
+                    'timeZone': 'Europe/Kiev',
+                },
+                'end': {
+                    'dateTime': (datetime.datetime.now() + datetime.timedelta(hours=2)).isoformat(),
+                    'timeZone': 'Europe/Kiev',
+                },
+                'conferenceData': {
+                    'entryPoints': [
+                        {
+                            'entryPointType': 'video',
+                            'uri': f'https://meet.google.com/{meetURL}',
+                            'label': f'meet.google.com/{meetURL}'
+                        }
+                    ],
+                    'conferenceId': meetURL,
+                    'conferenceSolution': {
+                        'key': {
+                            'type': 'hangoutsMeet'
+                        }
+                    }
+                },
+            }
+
+            try:
+                # Create the event with Google Calendar API
+                event_result = service.events().insert(
+                    calendarId='58eb06efc1be0bf127853aa5d83dc7e87eb29883287e37576ff3bc437c8e6e3b@group.calendar.google.com',
+                    body=event,
+                    conferenceDataVersion=1
+                ).execute()
+
+                # Save the meeting info to your database
+                meeting = Meeting(subject=subject, description=meeting_name, class_obj=class_obj, reference=f'https://meet.google.com/{meetURL}')
+                meeting.save()
+
+                return redirect('main')
+
+            except Exception as e:
+                print(f'Error creating event: {e}')
+                return HttpResponse('Error creating meeting', status=500)
 
     classes = Class.objects.filter(
         id__in=TeachersClassesSubject.objects.filter(
