@@ -238,21 +238,40 @@ function handleAction(element) {
     const action = element.getAttribute('data-action');
     const requestId = element.getAttribute('data-id');
 
-    fetch(`/${action}_request/${requestId}/`, {
-        method: 'POST',
-        headers: {
-            'X-CSRFToken': getCookie('csrftoken'),
-            'Content-Type': 'application/json'
-        },
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Оновити інтерфейс після схвалення або відхилення
-                element.closest('.request-card').remove();
-            }
+    if (action === 'delete') {
+        fetch(`/delete_meeting/${requestId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json'
+            },
         })
-        .catch(error => console.error('Error:', error));
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Оновити інтерфейс після схвалення або відхилення
+                    element.closest('.request-card').remove();
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+    else {
+        fetch(`/${action}_request/${requestId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Оновити інтерфейс після схвалення або відхилення
+                    element.closest('.request-card').remove();
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
 }
 
 function getCookie(name) {
@@ -270,10 +289,10 @@ function getCookie(name) {
     return cookieValue;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const requestsContainer = document.querySelector('.requests-container');
     const noRequestsMessage = document.querySelector('.no-requests-message');
-    
+
     if (requestsContainer.children.length === 0) {
         noRequestsMessage.classList.add('show');
     }

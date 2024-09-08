@@ -10,7 +10,7 @@ from .models import Subject, Teacher, Student
 import base64
 from django.core.files.base import ContentFile
 
-from .models import Request, Class, User, Teacher, Student
+from .models import Request, Class, User, Teacher, Student, TeachersClassesSubject, Meeting
 
 
 
@@ -232,3 +232,30 @@ def reject_request(request, request_id):
         return JsonResponse({'success': True})
 
     return JsonResponse({'success': False})
+
+
+def meetings_list_partial(request):
+    user = User.objects.get(id=request.session['user_id'])
+
+    if user.type == 'teacher':
+        try:
+            teacher = Teacher.objects.get(user=user)
+            subjects = TeachersClassesSubject.objects.filter(teacher=teacher).values_list('subject', flat=True)
+            meetings = Meeting.objects.filter(subject__in=subjects)
+            return render(request, 'meetings_list_partial.html', {'meetings': meetings})
+
+        except Teacher.DoesNotExist:
+            return HttpResponse('Teacher not found', status=404)
+
+    return HttpResponse('Unauthorized', status=403)
+
+def delete_meeting(request, meeting_id):
+    if request.method == 'POST':
+        try:
+            meeting = Meeting.objects.get(id=meeting_id)
+            meeting.delete()
+            return JsonResponse({'success': True})
+        except Meeting.DoesNotExist:
+            return JsonResponse({'success': False})
+    else:
+        return JsonResponse({'success': False})

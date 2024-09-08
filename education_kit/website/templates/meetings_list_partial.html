@@ -1,0 +1,25 @@
+<div class="requests-container">
+    <div class="requests-heading">
+        <h2>Список конференцій</h2>
+    </div>
+    {% if meetings %}
+        {% for meeting_obj in meetings %}
+        <div class="request-card">
+            <div class="request-info">
+                <span>{{ meeting_obj.subject.name }}</span>
+                <span>{{ meeting_obj.class_obj.name }}</span>
+                <span>{{ meeting_obj.timestamp }}</span>
+            </div>
+            <div class="request-actions">
+                <a href="{{ meeting_obj.reference }}"><span class="icon-door"><i class="fas fa-door-open"></i></span></a>
+                <span class="icon-cross" data-action="delete" data-id="{{ meeting_obj.id }}" onclick="handleAction(this)">&#10007;</span>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="no-requests-message show">
+            <p>Конференції відсутні</p>
+        </div>
+    {% endif %}
+</div>
+
