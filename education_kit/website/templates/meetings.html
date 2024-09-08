@@ -1,0 +1,13 @@
+<div class="teacher-subject-container">
+    {% if meetings_create %}
+        {% for item in meetings_create %}
+            <div class="teacher-subject">
+                <a class="learn-more-place-holder" style="text-decoration: none; color: inherit;">
+                    <h3>{{ item.name }}</h3>
+                    <p>{{ item.description }}</p>
+                </a>
+                <a href="{% url 'create_meeting' id=item.id %}" class="btn-create">Створити конференцію</a>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>

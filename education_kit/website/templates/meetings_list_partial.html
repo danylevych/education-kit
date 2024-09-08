@@ -6,7 +6,7 @@
         {% for meeting_obj in meetings %}
         <div class="request-card">
             <div class="request-info">
-                <span>{{ meeting_obj.subject.name }}</span>
+                <span>{{ meeting_obj.subject.name }} | {{ meeting_obj.description }}</span>
                 <span>{{ meeting_obj.class_obj.name }}</span>
                 <span>{{ meeting_obj.timestamp }}</span>
             </div>

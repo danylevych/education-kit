@@ -9,6 +9,7 @@ from django.http import JsonResponse
 from .models import Subject, Teacher, Student
 import base64
 from django.core.files.base import ContentFile
+from django.shortcuts import render, get_object_or_404, redirect
 
 from .models import Request, Class, User, Teacher, Student, TeachersClassesSubject, Meeting
 
@@ -259,3 +260,53 @@ def delete_meeting(request, meeting_id):
             return JsonResponse({'success': False})
     else:
         return JsonResponse({'success': False})
+
+
+def meetings_view(request):
+    user = User.objects.get(id=request.session['user_id'])
+
+    if user.type == 'teacher':
+        try:
+            teacher = Teacher.objects.get(user=user)
+            subjects = Subject.objects.filter(teacher=teacher)
+
+            return render(request, 'meetings.html', {'meetings_create': subjects})
+        except Teacher.DoesNotExist:
+            return HttpResponse('Teacher not found', status=404)
+
+    return HttpResponse('Unauthorized', status=403)
+
+
+
+def create_meeting_view(request, id):
+    subject = get_object_or_404(Subject, id=id)
+    user = User.objects.get(id=request.session['user_id'])
+
+    if user.type != 'teacher':
+        return HttpResponse('Unauthorized', status=403)
+
+    teacher = get_object_or_404(Teacher, user=user)
+
+    if request.method == 'POST':
+        meeting_name = request.POST.get('meeting_name')
+        class_id = request.POST.get('class_id')
+
+        if meeting_name and class_id:
+            class_obj = get_object_or_404(Class, id=class_id)
+
+            meeting = Meeting(subject=subject, description=meeting_name, class_obj=class_obj)
+            meeting.save()
+
+            return redirect('main')
+
+
+    classes = Class.objects.filter(
+        id__in=TeachersClassesSubject.objects.filter(
+            teacher=teacher, subject=subject
+        ).values('class_id')
+    )
+
+    return render(request, 'create_meeting.html', {
+        'subject': subject,
+        'classes': classes
+    })

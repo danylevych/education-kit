@@ -16,6 +16,8 @@ urlpatterns = [
     path('reject_request/<int:request_id>/', views.reject_request, name='reject_request'),
     path('meetings_list_partial/', views.meetings_list_partial, name='meetings_list_partial'),
     path('delete_meeting/<int:meeting_id>/', views.delete_meeting, name='delete_meeting'),
+    path('meetings/', views.meetings_view, name='meetings'),
+    path('create_meeting/<int:id>', views.create_meeting_view, name='create_meeting'),
 
     path('logout/', views.logout_view, name='logout'),
 ]
